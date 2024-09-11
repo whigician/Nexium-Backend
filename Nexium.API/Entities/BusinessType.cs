@@ -10,4 +10,5 @@ public class BusinessType
     public byte Id { get; set; }
 
     [Required] [MaxLength(50)] public string Label { get; set; }
+    public List<BusinessTypeTranslation> Translations { get; set; }
 }

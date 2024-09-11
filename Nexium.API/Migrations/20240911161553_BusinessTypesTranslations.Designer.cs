@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Nexium.API.Data;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nexium.API.Migrations
 {
     [DbContext(typeof(NexiumDbContext))]
-    partial class NexiumDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240911161553_BusinessTypesTranslations")]
+    partial class BusinessTypesTranslations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -461,9 +464,8 @@ namespace Nexium.API.Migrations
                     b.HasKey("Id")
                         .HasName("pk_business_types_translations");
 
-                    b.HasIndex("BusinessTypeId", "LanguageCode")
-                        .IsUnique()
-                        .HasDatabaseName("ix_business_types_translations_business_type_id_language_code");
+                    b.HasIndex("BusinessTypeId")
+                        .HasDatabaseName("ix_business_types_translations_business_type_id");
 
                     b.ToTable("business_types_translations", (string)null);
                 });

@@ -7,7 +7,7 @@ namespace Nexium.API.Controllers;
 
 [ApiController]
 [Route("api/[Controller]")]
-public class IndustriesController(IIndustriesService industriesService, ILogger<IndustriesController> logger) : ControllerBase
+public class IndustriesController(IIndustriesService industriesService) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult> GetAllIndustries(CancellationToken cancellationToken)

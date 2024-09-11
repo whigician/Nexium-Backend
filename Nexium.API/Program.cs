@@ -45,9 +45,13 @@ void ConfigureServices(IServiceCollection services)
     services.AddSwaggerGen();
     services.AddScoped<IIndustriesService, IndustriesService>();
     services.AddScoped<IIndustriesRepository, IndustriesRepository>();
+    services.AddScoped<IBusinessTypesService, BusinessTypesService>();
+    services.AddScoped<IBusinessTypesRepository, BusinessTypesRepository>();
     // Registering Mappers
     services.AddSingleton<IndustryMapper>();
     services.AddSingleton<IndustryTranslationMapper>();
+    services.AddSingleton<BusinessTypeMapper>();
+    services.AddSingleton<BusinessTypeTranslationMapper>();
     services.AddHttpContextAccessor();
     services.AddScoped<SelectedLanguageService>();
 }

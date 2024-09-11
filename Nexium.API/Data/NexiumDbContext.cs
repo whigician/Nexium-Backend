@@ -20,6 +20,7 @@ public class NexiumDbContext : DbContext
     public DbSet<BusinessStatus> BusinessStatuses { get; set; }
     public DbSet<BusinessType> BusinessTypes { get; set; }
     public DbSet<IndustryTranslation> IndustryTranslations { get; set; }
+    public DbSet<BusinessTypeTranslation> BusinessTypesTranslations { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,6 +37,9 @@ public class NexiumDbContext : DbContext
             .HasForeignKey(br => br.RelatedBusinessId);
         modelBuilder.Entity<IndustryTranslation>()
             .HasIndex(t => new { t.IndustryId, t.LanguageCode })
+            .IsUnique();
+        modelBuilder.Entity<BusinessTypeTranslation>()
+            .HasIndex(t => new { t.BusinessTypeId, t.LanguageCode })
             .IsUnique();
     }
 }
