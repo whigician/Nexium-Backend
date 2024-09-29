@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Nexium.API.Services;
 using Nexium.API.TransferObjects.Industry;
-using Nexium.API.TransferObjects.IndustryTranslation;
+using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Controllers;
 
@@ -41,25 +41,25 @@ public class IndustriesController(IIndustriesService industriesService) : Contro
         return NoContent();
     }
 
-    [HttpDelete("{industryId:int}")]
+    [HttpDelete("{industryId}")]
     public async Task<ActionResult> DeleteIndustry(short industryId, CancellationToken cancellationToken)
     {
         await industriesService.DeleteIndustry(industryId, cancellationToken);
         return NoContent();
     }
 
-    [HttpGet("translations/{industryId:int}")]
+    [HttpGet("translations/{industryId}")]
     public async Task<ActionResult> GetASingleIndustryTranslations(short industryId,
         CancellationToken cancellationToken)
     {
         return Ok(await industriesService.GetASingleIndustryTranslations(industryId, cancellationToken));
     }
 
-    [HttpPut("translations/{industryId:int}")]
+    [HttpPut("translations/{industryId}")]
     public async Task<ActionResult> UpdateASingleIndustryTranslations(short industryId,
-        [FromBody] List<IndustryTranslationSave> industryTranslationToSave, CancellationToken cancellationToken)
+        [FromBody] List<TranslationSave> translationsToSave, CancellationToken cancellationToken)
     {
-        await industriesService.UpdateASingleIndustryTranslations(industryId, industryTranslationToSave,
+        await industriesService.UpdateASingleIndustryTranslations(industryId, translationsToSave,
             cancellationToken);
         return NoContent();
     }

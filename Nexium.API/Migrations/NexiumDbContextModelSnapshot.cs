@@ -43,12 +43,12 @@ namespace Nexium.API.Migrations
 
             modelBuilder.Entity("Nexium.API.Entities.AddressType", b =>
                 {
-                    b.Property<short>("Id")
+                    b.Property<byte>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<short>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<byte>("Id"));
 
                     b.Property<string>("Label")
                         .IsRequired()
@@ -60,6 +60,41 @@ namespace Nexium.API.Migrations
                         .HasName("pk_address_types");
 
                     b.ToTable("address_types", (string)null);
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.AddressTypeTranslation", b =>
+                {
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<short>("Id"));
+
+                    b.Property<byte>("AddressTypeId")
+                        .HasColumnType("smallint")
+                        .HasColumnName("address_type_id");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("language_code");
+
+                    b.Property<string>("TranslatedLabel")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("translated_label");
+
+                    b.HasKey("Id")
+                        .HasName("pk_address_types_translations");
+
+                    b.HasIndex("AddressTypeId", "LanguageCode")
+                        .IsUnique()
+                        .HasDatabaseName("ix_address_types_translations_address_type_id_language_code");
+
+                    b.ToTable("address_types_translations", (string)null);
                 });
 
             modelBuilder.Entity("Nexium.API.Entities.Business", b =>
@@ -75,7 +110,7 @@ namespace Nexium.API.Migrations
                         .HasColumnType("text")
                         .HasColumnName("alias");
 
-                    b.Property<short>("BusinessStatusId")
+                    b.Property<byte>("BusinessStatusId")
                         .HasColumnType("smallint")
                         .HasColumnName("business_status_id");
 
@@ -112,7 +147,7 @@ namespace Nexium.API.Migrations
                         .HasColumnName("fiscal_year_start_period");
 
                     b.Property<string>("LanguageCode")
-                        .HasColumnType("character varying(2)")
+                        .HasColumnType("character varying(8)")
                         .HasColumnName("language_code");
 
                     b.Property<byte>("LanguageId")
@@ -169,7 +204,7 @@ namespace Nexium.API.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("address");
 
-                    b.Property<short>("AddressTypeId")
+                    b.Property<byte>("AddressTypeId")
                         .HasColumnType("smallint")
                         .HasColumnName("address_type_id");
 
@@ -240,7 +275,7 @@ namespace Nexium.API.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("business_id");
 
-                    b.Property<short>("ContactTypeId")
+                    b.Property<byte>("ContactTypeId")
                         .HasColumnType("smallint")
                         .HasColumnName("contact_type_id");
 
@@ -293,46 +328,6 @@ namespace Nexium.API.Migrations
                     b.ToTable("business_contact", (string)null);
                 });
 
-            modelBuilder.Entity("Nexium.API.Entities.BusinessCustomAttribute", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long>("BusinessId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("business_id");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)")
-                        .HasColumnName("name");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(25)
-                        .HasColumnType("character varying(25)")
-                        .HasColumnName("type");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasMaxLength(120)
-                        .HasColumnType("character varying(120)")
-                        .HasColumnName("value");
-
-                    b.HasKey("Id")
-                        .HasName("pk_business_custom_attribute");
-
-                    b.HasIndex("BusinessId")
-                        .HasDatabaseName("ix_business_custom_attribute_business_id");
-
-                    b.ToTable("business_custom_attribute", (string)null);
-                });
-
             modelBuilder.Entity("Nexium.API.Entities.BusinessIdentifier", b =>
                 {
                     b.Property<long>("Id")
@@ -346,7 +341,7 @@ namespace Nexium.API.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("business_id");
 
-                    b.Property<short>("IdentifierTypeId")
+                    b.Property<byte>("IdentifierTypeId")
                         .HasColumnType("smallint")
                         .HasColumnName("identifier_type_id");
 
@@ -393,12 +388,12 @@ namespace Nexium.API.Migrations
 
             modelBuilder.Entity("Nexium.API.Entities.BusinessStatus", b =>
                 {
-                    b.Property<short>("Id")
+                    b.Property<byte>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<short>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<byte>("Id"));
 
                     b.Property<string>("Label")
                         .IsRequired()
@@ -410,6 +405,41 @@ namespace Nexium.API.Migrations
                         .HasName("pk_business_statuses");
 
                     b.ToTable("business_statuses", (string)null);
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.BusinessStatusTranslation", b =>
+                {
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<short>("Id"));
+
+                    b.Property<byte>("BusinessStatusId")
+                        .HasColumnType("smallint")
+                        .HasColumnName("business_status_id");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("language_code");
+
+                    b.Property<string>("TranslatedLabel")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("translated_label");
+
+                    b.HasKey("Id")
+                        .HasName("pk_business_statuses_translations");
+
+                    b.HasIndex("BusinessStatusId", "LanguageCode")
+                        .IsUnique()
+                        .HasDatabaseName("ix_business_statuses_translations_business_status_id_language_");
+
+                    b.ToTable("business_statuses_translations", (string)null);
                 });
 
             modelBuilder.Entity("Nexium.API.Entities.BusinessType", b =>
@@ -442,9 +472,21 @@ namespace Nexium.API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<short>("Id"));
 
+                    b.Property<byte?>("AddressTypeId")
+                        .HasColumnType("smallint")
+                        .HasColumnName("address_type_id");
+
                     b.Property<byte>("BusinessTypeId")
                         .HasColumnType("smallint")
                         .HasColumnName("business_type_id");
+
+                    b.Property<byte?>("ContactTypeId")
+                        .HasColumnType("smallint")
+                        .HasColumnName("contact_type_id");
+
+                    b.Property<byte?>("IdentifierTypeId")
+                        .HasColumnType("smallint")
+                        .HasColumnName("identifier_type_id");
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
@@ -460,6 +502,15 @@ namespace Nexium.API.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_business_types_translations");
+
+                    b.HasIndex("AddressTypeId")
+                        .HasDatabaseName("ix_business_types_translations_address_type_id");
+
+                    b.HasIndex("ContactTypeId")
+                        .HasDatabaseName("ix_business_types_translations_contact_type_id");
+
+                    b.HasIndex("IdentifierTypeId")
+                        .HasDatabaseName("ix_business_types_translations_identifier_type_id");
 
                     b.HasIndex("BusinessTypeId", "LanguageCode")
                         .IsUnique()
@@ -498,12 +549,12 @@ namespace Nexium.API.Migrations
 
             modelBuilder.Entity("Nexium.API.Entities.ContactType", b =>
                 {
-                    b.Property<short>("Id")
+                    b.Property<byte>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("smallint")
                         .HasColumnName("id");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<short>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<byte>("Id"));
 
                     b.Property<string>("Label")
                         .IsRequired()
@@ -515,6 +566,41 @@ namespace Nexium.API.Migrations
                         .HasName("pk_contact_types");
 
                     b.ToTable("contact_types", (string)null);
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.ContactTypeTranslation", b =>
+                {
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<short>("Id"));
+
+                    b.Property<byte>("ContactTypeId")
+                        .HasColumnType("smallint")
+                        .HasColumnName("contact_type_id");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("language_code");
+
+                    b.Property<string>("TranslatedLabel")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("translated_label");
+
+                    b.HasKey("Id")
+                        .HasName("pk_contact_types_translations");
+
+                    b.HasIndex("ContactTypeId", "LanguageCode")
+                        .IsUnique()
+                        .HasDatabaseName("ix_contact_types_translations_contact_type_id_language_code");
+
+                    b.ToTable("contact_types_translations", (string)null);
                 });
 
             modelBuilder.Entity("Nexium.API.Entities.Country", b =>
@@ -559,7 +645,7 @@ namespace Nexium.API.Migrations
                     b.ToTable("currencies", (string)null);
                 });
 
-            modelBuilder.Entity("Nexium.API.Entities.IdentifierType", b =>
+            modelBuilder.Entity("Nexium.API.Entities.CurrencyTranslation", b =>
                 {
                     b.Property<short>("Id")
                         .ValueGeneratedOnAdd()
@@ -567,6 +653,41 @@ namespace Nexium.API.Migrations
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<short>("Id"));
+
+                    b.Property<byte>("CurrencyId")
+                        .HasColumnType("smallint")
+                        .HasColumnName("currency_id");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("language_code");
+
+                    b.Property<string>("TranslatedLabel")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("translated_label");
+
+                    b.HasKey("Id")
+                        .HasName("pk_currencies_translations");
+
+                    b.HasIndex("CurrencyId", "LanguageCode")
+                        .IsUnique()
+                        .HasDatabaseName("ix_currencies_translations_currency_id_language_code");
+
+                    b.ToTable("currencies_translations", (string)null);
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.IdentifierType", b =>
+                {
+                    b.Property<byte>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<byte>("Id"));
 
                     b.Property<string>("Label")
                         .IsRequired()
@@ -578,6 +699,41 @@ namespace Nexium.API.Migrations
                         .HasName("pk_identifier_types");
 
                     b.ToTable("identifier_types", (string)null);
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.IdentifierTypeTranslation", b =>
+                {
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<short>("Id"));
+
+                    b.Property<byte>("IdentifierTypeId")
+                        .HasColumnType("smallint")
+                        .HasColumnName("identifier_type_id");
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("language_code");
+
+                    b.Property<string>("TranslatedLabel")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("translated_label");
+
+                    b.HasKey("Id")
+                        .HasName("pk_identifier_types_translations");
+
+                    b.HasIndex("IdentifierTypeId", "LanguageCode")
+                        .IsUnique()
+                        .HasDatabaseName("ix_identifier_types_translations_identifier_type_id_language_c");
+
+                    b.ToTable("identifier_types_translations", (string)null);
                 });
 
             modelBuilder.Entity("Nexium.API.Entities.Industry", b =>
@@ -639,8 +795,8 @@ namespace Nexium.API.Migrations
             modelBuilder.Entity("Nexium.API.Entities.Language", b =>
                 {
                     b.Property<string>("Code")
-                        .HasMaxLength(2)
-                        .HasColumnType("character varying(2)")
+                        .HasMaxLength(8)
+                        .HasColumnType("character varying(8)")
                         .HasColumnName("code");
 
                     b.Property<string>("Name")
@@ -653,6 +809,23 @@ namespace Nexium.API.Migrations
                         .HasName("pk_languages");
 
                     b.ToTable("languages", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Code = "ar-SA",
+                            Name = "العربية"
+                        },
+                        new
+                        {
+                            Code = "fr-FR",
+                            Name = "Français"
+                        },
+                        new
+                        {
+                            Code = "en-US",
+                            Name = "English"
+                        });
                 });
 
             modelBuilder.Entity("Nexium.API.Entities.TargetMarket", b =>
@@ -683,6 +856,41 @@ namespace Nexium.API.Migrations
                     b.ToTable("target_markets", (string)null);
                 });
 
+            modelBuilder.Entity("Nexium.API.Entities.TargetMarketTranslation", b =>
+                {
+                    b.Property<short>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("smallint")
+                        .HasColumnName("id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<short>("Id"));
+
+                    b.Property<string>("LanguageCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("character varying(10)")
+                        .HasColumnName("language_code");
+
+                    b.Property<byte>("TargetMarketId")
+                        .HasColumnType("smallint")
+                        .HasColumnName("target_market_id");
+
+                    b.Property<string>("TranslatedLabel")
+                        .IsRequired()
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
+                        .HasColumnName("translated_label");
+
+                    b.HasKey("Id")
+                        .HasName("pk_target_markets_translations");
+
+                    b.HasIndex("TargetMarketId", "LanguageCode")
+                        .IsUnique()
+                        .HasDatabaseName("ix_target_markets_translations_target_market_id_language_code");
+
+                    b.ToTable("target_markets_translations", (string)null);
+                });
+
             modelBuilder.Entity("BusinessIndustry", b =>
                 {
                     b.HasOne("Nexium.API.Entities.Business", null)
@@ -698,6 +906,18 @@ namespace Nexium.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_business_industry_industries_industries_id");
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.AddressTypeTranslation", b =>
+                {
+                    b.HasOne("Nexium.API.Entities.AddressType", "AddressType")
+                        .WithMany()
+                        .HasForeignKey("AddressTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_address_types_translations_address_types_address_type_id");
+
+                    b.Navigation("AddressType");
                 });
 
             modelBuilder.Entity("Nexium.API.Entities.Business", b =>
@@ -786,18 +1006,6 @@ namespace Nexium.API.Migrations
                     b.Navigation("ContactType");
                 });
 
-            modelBuilder.Entity("Nexium.API.Entities.BusinessCustomAttribute", b =>
-                {
-                    b.HasOne("Nexium.API.Entities.Business", "Business")
-                        .WithMany("BusinessCustomAttributes")
-                        .HasForeignKey("BusinessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_business_custom_attribute_business_business_id");
-
-                    b.Navigation("Business");
-                });
-
             modelBuilder.Entity("Nexium.API.Entities.BusinessIdentifier", b =>
                 {
                     b.HasOne("Nexium.API.Entities.Business", "Business")
@@ -840,14 +1048,41 @@ namespace Nexium.API.Migrations
                     b.Navigation("RelatedBusiness");
                 });
 
+            modelBuilder.Entity("Nexium.API.Entities.BusinessStatusTranslation", b =>
+                {
+                    b.HasOne("Nexium.API.Entities.BusinessStatus", "BusinessType")
+                        .WithMany("Translations")
+                        .HasForeignKey("BusinessStatusId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_business_statuses_translations_business_statuses_business_s");
+
+                    b.Navigation("BusinessType");
+                });
+
             modelBuilder.Entity("Nexium.API.Entities.BusinessTypeTranslation", b =>
                 {
+                    b.HasOne("Nexium.API.Entities.AddressType", null)
+                        .WithMany("Translations")
+                        .HasForeignKey("AddressTypeId")
+                        .HasConstraintName("fk_business_types_translations_address_types_address_type_id");
+
                     b.HasOne("Nexium.API.Entities.BusinessType", "BusinessType")
                         .WithMany("Translations")
                         .HasForeignKey("BusinessTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_business_types_translations_business_types_business_type_id");
+
+                    b.HasOne("Nexium.API.Entities.ContactType", null)
+                        .WithMany("Translations")
+                        .HasForeignKey("ContactTypeId")
+                        .HasConstraintName("fk_business_types_translations_contact_types_contact_type_id");
+
+                    b.HasOne("Nexium.API.Entities.IdentifierType", null)
+                        .WithMany("Translations")
+                        .HasForeignKey("IdentifierTypeId")
+                        .HasConstraintName("fk_business_types_translations_identifier_types_identifier_typ");
 
                     b.Navigation("BusinessType");
                 });
@@ -862,6 +1097,42 @@ namespace Nexium.API.Migrations
                         .HasConstraintName("fk_city_country_country_id");
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.ContactTypeTranslation", b =>
+                {
+                    b.HasOne("Nexium.API.Entities.ContactType", "ContactType")
+                        .WithMany()
+                        .HasForeignKey("ContactTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_contact_types_translations_contact_types_contact_type_id");
+
+                    b.Navigation("ContactType");
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.CurrencyTranslation", b =>
+                {
+                    b.HasOne("Nexium.API.Entities.Currency", "Currency")
+                        .WithMany("Translations")
+                        .HasForeignKey("CurrencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_currencies_translations_currencies_currency_id");
+
+                    b.Navigation("Currency");
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.IdentifierTypeTranslation", b =>
+                {
+                    b.HasOne("Nexium.API.Entities.IdentifierType", "AddressType")
+                        .WithMany()
+                        .HasForeignKey("IdentifierTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_identifier_types_translations_identifier_types_identifier_t");
+
+                    b.Navigation("AddressType");
                 });
 
             modelBuilder.Entity("Nexium.API.Entities.IndustryTranslation", b =>
@@ -884,13 +1155,28 @@ namespace Nexium.API.Migrations
                         .HasConstraintName("fk_target_markets_business_business_id");
                 });
 
+            modelBuilder.Entity("Nexium.API.Entities.TargetMarketTranslation", b =>
+                {
+                    b.HasOne("Nexium.API.Entities.TargetMarket", "TargetMarket")
+                        .WithMany("Translations")
+                        .HasForeignKey("TargetMarketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_target_markets_translations_target_markets_target_market_id");
+
+                    b.Navigation("TargetMarket");
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.AddressType", b =>
+                {
+                    b.Navigation("Translations");
+                });
+
             modelBuilder.Entity("Nexium.API.Entities.Business", b =>
                 {
                     b.Navigation("BusinessAddresses");
 
                     b.Navigation("BusinessContacts");
-
-                    b.Navigation("BusinessCustomAttributes");
 
                     b.Navigation("BusinessIdentifiers");
 
@@ -901,12 +1187,37 @@ namespace Nexium.API.Migrations
                     b.Navigation("TargetMarkets");
                 });
 
+            modelBuilder.Entity("Nexium.API.Entities.BusinessStatus", b =>
+                {
+                    b.Navigation("Translations");
+                });
+
             modelBuilder.Entity("Nexium.API.Entities.BusinessType", b =>
                 {
                     b.Navigation("Translations");
                 });
 
+            modelBuilder.Entity("Nexium.API.Entities.ContactType", b =>
+                {
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.Currency", b =>
+                {
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.IdentifierType", b =>
+                {
+                    b.Navigation("Translations");
+                });
+
             modelBuilder.Entity("Nexium.API.Entities.Industry", b =>
+                {
+                    b.Navigation("Translations");
+                });
+
+            modelBuilder.Entity("Nexium.API.Entities.TargetMarket", b =>
                 {
                     b.Navigation("Translations");
                 });

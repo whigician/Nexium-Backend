@@ -22,7 +22,7 @@ public class BusinessAddress
     public DateTime? UpdatedAt { get; set; }
     public DateTime? DeletedAt { get; set; }
     public AddressType AddressType { get; set; }
-    public sbyte AddressTypeId { get; set; }
+    public byte AddressTypeId { get; set; }
     public Business Business { get; set; }
     public long BusinessId { get; set; }
     public City City { get; set; }

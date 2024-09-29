@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Nexium.API.Services;
 using Nexium.API.TransferObjects.BusinessType;
-using Nexium.API.TransferObjects.BusinessTypeTranslation;
+using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Controllers;
 
@@ -15,7 +15,7 @@ public class BusinessTypesController(IBusinessTypesService businessTypesService)
         return Ok(await businessTypesService.GetAllBusinessTypes(cancellationToken));
     }
 
-    [HttpGet("{businessTypeId:int}")]
+    [HttpGet("{businessTypeId}")]
     public async Task<ActionResult> GetSingleBusinessTypeById(byte businessTypeId, CancellationToken cancellationToken)
     {
         return Ok(await businessTypesService.GetSingleBusinessTypeById(businessTypeId, cancellationToken));
@@ -31,8 +31,9 @@ public class BusinessTypesController(IBusinessTypesService businessTypesService)
         return CreatedAtAction(nameof(GetSingleBusinessTypeById), new { businessTypeId = result.Id }, result);
     }
 
-    [HttpPut("{businessTypeId:int}")]
-    public async Task<ActionResult> UpdateBusinessType(byte businessTypeId, [FromBody] BusinessTypeSave businessTypeToUpdate,
+    [HttpPut("{businessTypeId}")]
+    public async Task<ActionResult> UpdateBusinessType(byte businessTypeId,
+        [FromBody] BusinessTypeSave businessTypeToUpdate,
         CancellationToken cancellationToken)
     {
         if (!ModelState.IsValid)
@@ -41,25 +42,25 @@ public class BusinessTypesController(IBusinessTypesService businessTypesService)
         return NoContent();
     }
 
-    [HttpDelete("{businessTypeId:int}")]
+    [HttpDelete("{businessTypeId}")]
     public async Task<ActionResult> DeleteBusinessType(byte businessTypeId, CancellationToken cancellationToken)
     {
         await businessTypesService.DeleteBusinessType(businessTypeId, cancellationToken);
         return NoContent();
     }
 
-    [HttpGet("translations/{businessTypeId:int}")]
+    [HttpGet("translations/{businessTypeId}")]
     public async Task<ActionResult> GetASingleBusinessTypeTranslations(byte businessTypeId,
         CancellationToken cancellationToken)
     {
         return Ok(await businessTypesService.GetASingleBusinessTypeTranslations(businessTypeId, cancellationToken));
     }
 
-    [HttpPut("translations/{businessTypeId:int}")]
+    [HttpPut("translations/{businessTypeId}")]
     public async Task<ActionResult> UpdateASingleBusinessTypeTranslations(byte businessTypeId,
-        [FromBody] List<BusinessTypeTranslationSave> businessTypeTranslationToSave, CancellationToken cancellationToken)
+        [FromBody] List<TranslationSave> translationsToSave, CancellationToken cancellationToken)
     {
-        await businessTypesService.UpdateASingleBusinessTypeTranslations(businessTypeId, businessTypeTranslationToSave,
+        await businessTypesService.UpdateASingleBusinessTypeTranslations(businessTypeId, translationsToSave,
             cancellationToken);
         return NoContent();
     }

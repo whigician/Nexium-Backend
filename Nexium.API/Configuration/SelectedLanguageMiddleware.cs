@@ -8,7 +8,7 @@ public class SelectedLanguageMiddleware(RequestDelegate next)
         if (string.IsNullOrEmpty(userSelectedLanguage))
             userSelectedLanguage = context.Request.Headers["Accept-Language"].ToString().Split(',').FirstOrDefault()
                 ?.Trim();
-        if (string.IsNullOrEmpty(userSelectedLanguage)) userSelectedLanguage = "en";
+        if (string.IsNullOrEmpty(userSelectedLanguage)) userSelectedLanguage = "fr-FR";
         context.Items["SelectedLanguage"] = userSelectedLanguage;
         await next(context);
     }

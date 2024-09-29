@@ -25,10 +25,6 @@ public class Business
     public List<TargetMarket> TargetMarkets { get; set; }
     public List<BusinessAddress> BusinessAddresses { get; set; }
     public List<BusinessContact> BusinessContacts { get; set; }
-
-    public List<BusinessCustomAttribute> BusinessCustomAttributes { get; set; }
-
-// Navigation properties to the join table
     public ICollection<BusinessRelationship> Suppliers { get; set; }
     public ICollection<BusinessRelationship> Retailers { get; set; }
     public Language Language { get; set; }
@@ -38,6 +34,6 @@ public class Business
     public BusinessType BusinessType { get; set; }
     public byte BusinessTypeId { get; set; }
     public BusinessStatus BusinessStatus { get; set; }
-    public sbyte BusinessStatusId { get; set; }
+    public byte BusinessStatusId { get; set; }
     public List<BusinessIdentifier> BusinessIdentifiers { get; set; }
 }

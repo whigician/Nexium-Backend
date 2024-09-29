@@ -4,7 +4,7 @@ using Nexium.API.Data.Repositories;
 using Nexium.API.Entities;
 using Nexium.API.Exceptions;
 using Nexium.API.TransferObjects.Industry;
-using Nexium.API.TransferObjects.IndustryTranslation;
+using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Services.Implementation;
 
@@ -12,7 +12,7 @@ public class IndustriesService(
     IndustryMapper mapper,
     IIndustriesRepository industriesRepository,
     SelectedLanguageService selectedLanguageService,
-    IndustryTranslationMapper industryTranslationMapper) : IIndustriesService
+    TranslationMapper industryTranslationMapper) : IIndustriesService
 {
     public async Task<List<IndustryView>> GetAllIndustries(CancellationToken cancellationToken)
     {
@@ -62,11 +62,18 @@ public class IndustriesService(
     {
         var existingIndustry = await industriesRepository.GetSingleIndustryById(industryId, cancellationToken);
         if (existingIndustry == null)
+            throw new EntityNotFoundException(nameof(Industry), nameof(industryId), industryId.ToString());
+        try
+        {
+            await industriesRepository.DeleteIndustry(existingIndustry, cancellationToken);
+        }
+        catch (ReferenceConstraintException)
+        {
             throw new EntityReferencedException(nameof(Industry), nameof(industryId), industryId.ToString());
-        await industriesRepository.DeleteIndustry(existingIndustry, cancellationToken);
+        }
     }
 
-    public async Task<List<IndustryTranslationView>> GetASingleIndustryTranslations(short industryId,
+    public async Task<List<TranslationView>> GetASingleIndustryTranslations(short industryId,
         CancellationToken cancellationToken)
     {
         return industryTranslationMapper.MapToIndustryTranslationViewList(
@@ -74,15 +81,15 @@ public class IndustriesService(
     }
 
     public async Task UpdateASingleIndustryTranslations(short industryId,
-        List<IndustryTranslationSave> industryTranslationToSave, CancellationToken cancellationToken)
+        List<TranslationSave> industryTranslationsToSave, CancellationToken cancellationToken)
     {
         var existingTranslations =
             await industriesRepository.GetASingleIndustryTranslations(industryId, cancellationToken);
         var translationsToCreate =
-            industryTranslationMapper.MapToIndustryTranslationList(industryTranslationToSave
+            industryTranslationMapper.MapToIndustryTranslationList(industryTranslationsToSave
                 .Where(x => x.Id is 0 or null).ToList());
         translationsToCreate.ForEach(t => t.IndustryId = industryId);
-        var translationsUpdateInformation = industryTranslationToSave
+        var translationsUpdateInformation = industryTranslationsToSave
             .Where(x => existingTranslations.Any(i => i.Id == x.Id)).ToList();
         var translationsToUpdate = translationsUpdateInformation.Select(x =>
         {
@@ -94,7 +101,7 @@ public class IndustriesService(
             return translationToBeUpdated;
         }).Where(x => x != null).ToList();
         var translationsToDelete = existingTranslations
-            .Where(et => industryTranslationToSave.All(nt => nt.Id != et.Id && nt.Id != null && nt.Id != 0))
+            .Where(et => industryTranslationsToSave.All(nt => nt.Id != et.Id && nt.Id != null && nt.Id != 0))
             .ToList();
 
         await SaveTranslations(translationsToCreate, translationsToUpdate, translationsToDelete, cancellationToken);

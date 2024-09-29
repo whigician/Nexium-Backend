@@ -4,7 +4,7 @@ using Nexium.API.Data.Repositories;
 using Nexium.API.Entities;
 using Nexium.API.Exceptions;
 using Nexium.API.TransferObjects.BusinessType;
-using Nexium.API.TransferObjects.BusinessTypeTranslation;
+using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Services.Implementation;
 
@@ -12,7 +12,7 @@ public class BusinessTypesService(
     BusinessTypeMapper mapper,
     IBusinessTypesRepository businessTypesRepository,
     SelectedLanguageService selectedLanguageService,
-    BusinessTypeTranslationMapper businessTypeTranslationMapper) : IBusinessTypesService
+    TranslationMapper translationMapper) : IBusinessTypesService
 {
     public async Task<List<BusinessTypeView>> GetAllBusinessTypes(CancellationToken cancellationToken)
     {
@@ -25,22 +25,26 @@ public class BusinessTypesService(
         }).ToList();
     }
 
-    public async Task<BusinessTypeView> GetSingleBusinessTypeById(byte businessTypeId, CancellationToken cancellationToken)
+    public async Task<BusinessTypeView> GetSingleBusinessTypeById(byte businessTypeId,
+        CancellationToken cancellationToken)
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var businessType =
-            await businessTypesRepository.GetSingleBusinessTypeById(businessTypeId, cancellationToken, selectedLanguage, true);
+            await businessTypesRepository.GetSingleBusinessTypeById(businessTypeId, cancellationToken, selectedLanguage,
+                true);
         if (businessType == null)
             throw new EntityNotFoundException(nameof(BusinessType), nameof(businessTypeId), businessTypeId.ToString());
         return new BusinessTypeView
         {
             Id = businessType.Id,
-            Label = businessType.Translations.FirstOrDefault(t => t.LanguageCode == selectedLanguage)?.TranslatedLabel ??
-                    businessType.Label
+            Label =
+                businessType.Translations.FirstOrDefault(t => t.LanguageCode == selectedLanguage)?.TranslatedLabel ??
+                businessType.Label
         };
     }
 
-    public async Task<BusinessTypeView> CreateBusinessType(BusinessTypeSave businessTypeToCreate, CancellationToken cancellationToken)
+    public async Task<BusinessTypeView> CreateBusinessType(BusinessTypeSave businessTypeToCreate,
+        CancellationToken cancellationToken)
     {
         var businessType = mapper.MapToBusinessType(businessTypeToCreate);
         var createdBusinessType = await businessTypesRepository.CreateBusinessType(businessType, cancellationToken);
@@ -51,7 +55,8 @@ public class BusinessTypesService(
         CancellationToken cancellationToken)
     {
         var businessTypeUpdatedValues = mapper.MapToBusinessType(businessTypeToUpdate);
-        var existingBusinessType = await businessTypesRepository.GetSingleBusinessTypeById(businessTypeId, cancellationToken);
+        var existingBusinessType =
+            await businessTypesRepository.GetSingleBusinessTypeById(businessTypeId, cancellationToken);
         if (existingBusinessType == null)
             throw new EntityNotFoundException(nameof(BusinessType), nameof(businessTypeId), businessTypeId.ToString());
         existingBusinessType.Label = businessTypeUpdatedValues.Label;
@@ -60,29 +65,39 @@ public class BusinessTypesService(
 
     public async Task DeleteBusinessType(byte businessTypeId, CancellationToken cancellationToken)
     {
-        var existingBusinessType = await businessTypesRepository.GetSingleBusinessTypeById(businessTypeId, cancellationToken);
+        var existingBusinessType =
+            await businessTypesRepository.GetSingleBusinessTypeById(businessTypeId, cancellationToken);
         if (existingBusinessType == null)
-            throw new EntityReferencedException(nameof(BusinessType), nameof(businessTypeId), businessTypeId.ToString());
-        await businessTypesRepository.DeleteBusinessType(existingBusinessType, cancellationToken);
+            throw new EntityNotFoundException(nameof(BusinessType), nameof(businessTypeId),
+                businessTypeId.ToString());
+        try
+        {
+            await businessTypesRepository.DeleteBusinessType(existingBusinessType, cancellationToken);
+        }
+        catch (ReferenceConstraintException)
+        {
+            throw new EntityReferencedException(nameof(BusinessType), nameof(businessTypeId),
+                businessTypeId.ToString());
+        }
     }
 
-    public async Task<List<BusinessTypeTranslationView>> GetASingleBusinessTypeTranslations(byte businessTypeId,
+    public async Task<List<TranslationView>> GetASingleBusinessTypeTranslations(byte businessTypeId,
         CancellationToken cancellationToken)
     {
-        return businessTypeTranslationMapper.MapToBusinessTypeTranslationViewList(
+        return translationMapper.MapToBusinessTypeTranslationViewList(
             await businessTypesRepository.GetASingleBusinessTypeTranslations(businessTypeId, cancellationToken, true));
     }
 
     public async Task UpdateASingleBusinessTypeTranslations(byte businessTypeId,
-        List<BusinessTypeTranslationSave> businessTypeTranslationToSave, CancellationToken cancellationToken)
+        List<TranslationSave> businessTypeTranslationsToSave, CancellationToken cancellationToken)
     {
         var existingTranslations =
             await businessTypesRepository.GetASingleBusinessTypeTranslations(businessTypeId, cancellationToken);
         var translationsToCreate =
-            businessTypeTranslationMapper.MapToBusinessTypeTranslationList(businessTypeTranslationToSave
+            translationMapper.MapToBusinessTypeTranslationList(businessTypeTranslationsToSave
                 .Where(x => x.Id is 0 or null).ToList());
         translationsToCreate.ForEach(t => t.BusinessTypeId = businessTypeId);
-        var translationsUpdateInformation = businessTypeTranslationToSave
+        var translationsUpdateInformation = businessTypeTranslationsToSave
             .Where(x => existingTranslations.Any(i => i.Id == x.Id)).ToList();
         var translationsToUpdate = translationsUpdateInformation.Select(x =>
         {
@@ -94,7 +109,7 @@ public class BusinessTypesService(
             return translationToBeUpdated;
         }).Where(x => x != null).ToList();
         var translationsToDelete = existingTranslations
-            .Where(et => businessTypeTranslationToSave.All(nt => nt.Id != et.Id && nt.Id != null && nt.Id != 0))
+            .Where(et => businessTypeTranslationsToSave.All(nt => nt.Id != et.Id && nt.Id != null && nt.Id != 0))
             .ToList();
 
         await SaveTranslations(translationsToCreate, translationsToUpdate, translationsToDelete, cancellationToken);

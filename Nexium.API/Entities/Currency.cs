@@ -10,4 +10,5 @@ public class Currency
     public byte Id { get; set; }
 
     [Required] [MaxLength(25)] public string Label { get; set; }
+    public List<CurrencyTranslation> Translations { get; set; }
 }

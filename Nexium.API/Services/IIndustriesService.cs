@@ -1,5 +1,5 @@
 ﻿using Nexium.API.TransferObjects.Industry;
-using Nexium.API.TransferObjects.IndustryTranslation;
+using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Services;
 
@@ -11,9 +11,9 @@ public interface IIndustriesService
     public Task UpdateIndustry(short industryId, IndustrySave industryToUpdate, CancellationToken cancellationToken);
     public Task DeleteIndustry(short industryId, CancellationToken cancellationToken);
 
-    Task<List<IndustryTranslationView>> GetASingleIndustryTranslations(short industryId,
+    Task<List<TranslationView>> GetASingleIndustryTranslations(short industryId,
         CancellationToken cancellationToken);
 
-    Task UpdateASingleIndustryTranslations(short industryId, List<IndustryTranslationSave> industryTranslationToSave,
+    Task UpdateASingleIndustryTranslations(short industryId, List<TranslationSave> industryTranslationsToSave,
         CancellationToken cancellationToken);
 }

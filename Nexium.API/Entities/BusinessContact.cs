@@ -22,7 +22,7 @@ public class BusinessContact
     public DateTime? UpdatedAt { get; set; }
     public DateTime? DeletedAt { get; set; }
     public ContactType ContactType { get; set; }
-    public sbyte ContactTypeId { get; set; }
+    public byte ContactTypeId { get; set; }
     public Business Business { get; set; }
     public long BusinessId { get; set; }
 }

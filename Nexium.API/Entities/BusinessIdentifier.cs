@@ -13,5 +13,5 @@ public class BusinessIdentifier
     public Business Business { get; set; }
     public long BusinessId { get; set; }
     public IdentifierType IdentifierType { get; set; }
-    public sbyte IdentifierTypeId { get; set; }
+    public byte IdentifierTypeId { get; set; }
 }

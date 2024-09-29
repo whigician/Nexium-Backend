@@ -10,6 +10,17 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, config) => config.ReadFrom.Configuration(context.Configuration));
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("_allowedOrigins", policy =>
+    {
+        policy.WithOrigins(
+                "http://localhost:3000")
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
 ConfigureServices(builder.Services);
 
 var app = builder.Build();
@@ -19,6 +30,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("_allowedOrigins");
 app.UseMiddleware<SelectedLanguageMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthorization();
@@ -47,11 +59,32 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<IIndustriesRepository, IndustriesRepository>();
     services.AddScoped<IBusinessTypesService, BusinessTypesService>();
     services.AddScoped<IBusinessTypesRepository, BusinessTypesRepository>();
+    services.AddScoped<IBusinessStatusesService, BusinessStatusesService>();
+    services.AddScoped<IBusinessStatusesRepository, BusinessStatusesRepository>();
+    services.AddScoped<ITargetMarketsService, TargetMarketsService>();
+    services.AddScoped<ITargetMarketsRepository, TargetMarketsRepository>();
+    services.AddScoped<ICurrenciesService, CurrenciesService>();
+    services.AddScoped<ICurrenciesRepository, CurrenciesRepository>();
+    services.AddScoped<IAddressTypesService, AddressTypesService>();
+    services.AddScoped<IAddressTypesRepository, AddressTypesRepository>();
+    services.AddScoped<IContactTypesService, ContactTypesService>();
+    services.AddScoped<IContactTypesRepository, ContactTypesRepository>();
+    services.AddScoped<IIdentifierTypesService, IdentifierTypesService>();
+    services.AddScoped<IIdentifierTypesRepository, IdentifierTypesRepository>();
+    services.AddScoped<ILanguagesService, LanguagesService>();
+    services.AddScoped<ILanguagesRepository, LanguagesRepository>();
     // Registering Mappers
     services.AddSingleton<IndustryMapper>();
-    services.AddSingleton<IndustryTranslationMapper>();
+    services.AddSingleton<TranslationMapper>();
     services.AddSingleton<BusinessTypeMapper>();
-    services.AddSingleton<BusinessTypeTranslationMapper>();
+    services.AddSingleton<BusinessStatusMapper>();
+    services.AddSingleton<IdentifierTypeMapper>();
+    services.AddSingleton<ContactTypeMapper>();
+    services.AddSingleton<AddressTypeMapper>();
+    services.AddSingleton<LanguageMapper>();
+    services.AddSingleton<CurrencyMapper>();
+    services.AddSingleton<TargetMarketMapper>();
+    services.AddSingleton<TranslationMapper>();
     services.AddHttpContextAccessor();
     services.AddScoped<SelectedLanguageService>();
 }
