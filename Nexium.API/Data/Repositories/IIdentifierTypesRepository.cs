@@ -8,7 +8,7 @@ public interface IIdentifierTypesRepository
         GetAllIdentifierTypes(CancellationToken cancellationToken, string selectedLanguage = "fr-FR");
 
     public Task<IdentifierType> GetSingleIdentifierTypeById(byte identifierTypeId, CancellationToken cancellationToken,
-        string selectedLanguage = "fr-FR",
+        string selectedLanguage = "fr",
         bool forView = false);
 
     Task<IdentifierType> CreateIdentifierType(IdentifierType identifierType, CancellationToken cancellationToken);

@@ -8,7 +8,7 @@ public interface IContactTypesRepository
         GetAllContactTypes(CancellationToken cancellationToken, string selectedLanguage = "fr-FR");
 
     public Task<ContactType> GetSingleContactTypeById(byte contactTypeId, CancellationToken cancellationToken,
-        string selectedLanguage = "fr-FR",
+        string selectedLanguage = "fr",
         bool forView = false);
 
     Task<ContactType> CreateContactType(ContactType contactType, CancellationToken cancellationToken);

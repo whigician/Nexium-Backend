@@ -66,9 +66,9 @@ public class NexiumDbContext : DbContext
             .HasIndex(t => new { t.IdentifierTypeId, t.LanguageCode })
             .IsUnique();
         modelBuilder.Entity<Language>().HasData(
-            new Language { Code = "ar-SA", Name = "العربية" },
-            new Language { Code = "fr-FR", Name = "Français" },
-            new Language { Code = "en-US", Name = "English" }
+            new Language { Code = "ar", Name = "العربية" },
+            new Language { Code = "fr", Name = "Français" },
+            new Language { Code = "en", Name = "English" }
         );
     }
 }

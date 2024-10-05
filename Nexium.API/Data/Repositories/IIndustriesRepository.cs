@@ -8,7 +8,7 @@ public interface IIndustriesRepository
         GetAllIndustries(CancellationToken cancellationToken, string selectedLanguage = "fr-FR");
 
     public Task<Industry> GetSingleIndustryById(short industryId, CancellationToken cancellationToken,
-        string selectedLanguage = "fr-FR",
+        string selectedLanguage = "fr",
         bool forView = false);
 
     Task<Industry> CreateIndustry(Industry industry, CancellationToken cancellationToken);

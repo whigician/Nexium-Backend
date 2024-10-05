@@ -8,7 +8,7 @@ public interface ICurrenciesRepository
         GetAllCurrencies(CancellationToken cancellationToken, string selectedLanguage = "fr-FR");
 
     public Task<Currency> GetSingleCurrencyById(byte currencyId, CancellationToken cancellationToken,
-        string selectedLanguage = "fr-FR",
+        string selectedLanguage = "fr",
         bool forView = false);
 
     Task<Currency> CreateCurrency(Currency currency, CancellationToken cancellationToken);

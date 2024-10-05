@@ -7,7 +7,7 @@ public class TargetMarketsRepository(NexiumDbContext dbContext)
     : ITargetMarketsRepository
 {
     public Task<List<TargetMarket>> GetAllTargetMarkets(CancellationToken cancellationToken,
-        string selectedLanguage = "fr-FR")
+        string selectedLanguage = "fr")
     {
         return dbContext.TargetMarkets
             .Include(i => i.Translations.Where(t => t.LanguageCode == selectedLanguage))

@@ -813,17 +813,17 @@ namespace Nexium.API.Migrations
                     b.HasData(
                         new
                         {
-                            Code = "ar-SA",
+                            Code = "ar",
                             Name = "العربية"
                         },
                         new
                         {
-                            Code = "fr-FR",
+                            Code = "fr",
                             Name = "Français"
                         },
                         new
                         {
-                            Code = "en-US",
+                            Code = "en",
                             Name = "English"
                         });
                 });

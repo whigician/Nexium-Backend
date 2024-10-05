@@ -8,7 +8,7 @@ public interface IBusinessStatusesRepository
         GetAllBusinessStatuses(CancellationToken cancellationToken, string selectedLanguage = "fr-FR");
 
     public Task<BusinessStatus> GetSingleBusinessStatusById(byte businessStatusId, CancellationToken cancellationToken,
-        string selectedLanguage = "fr-FR",
+        string selectedLanguage = "fr",
         bool forView = false);
 
     Task<BusinessStatus> CreateBusinessStatus(BusinessStatus businessStatus, CancellationToken cancellationToken);
