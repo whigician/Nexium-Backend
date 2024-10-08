@@ -4,7 +4,8 @@ public class SelectedLanguageMiddleware(RequestDelegate next)
 {
     public async Task InvokeAsync(HttpContext context)
     {
-        var userSelectedLanguage = context.Request.Headers["X-Language"].ToString();
+        var LanguageOverride = context.Request.Headers["X-Language-Override"].ToString();
+        var userSelectedLanguage = !string.IsNullOrEmpty(LanguageOverride) ? LanguageOverride : context.Request.Headers["X-Language"].ToString();
         if (string.IsNullOrEmpty(userSelectedLanguage))
             userSelectedLanguage = context.Request.Headers["Accept-Language"].ToString().Split(',').FirstOrDefault()
                 ?.Trim();
