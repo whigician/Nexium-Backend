@@ -8,7 +8,7 @@ public interface IBusinessTypesRepository
         GetAllBusinessTypes(CancellationToken cancellationToken, string selectedLanguage = "fr-FR");
 
     public Task<BusinessType> GetSingleBusinessTypeById(byte businessTypeId, CancellationToken cancellationToken,
-        string selectedLanguage = "fr-FR",
+        string selectedLanguage = "fr",
         bool forView = false);
 
     Task<BusinessType> CreateBusinessType(BusinessType businessType, CancellationToken cancellationToken);

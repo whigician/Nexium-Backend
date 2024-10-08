@@ -7,7 +7,7 @@ public class IdentifierTypesRepository(NexiumDbContext dbContext)
     : IIdentifierTypesRepository
 {
     public Task<List<IdentifierType>> GetAllIdentifierTypes(CancellationToken cancellationToken,
-        string selectedLanguage = "fr-FR")
+        string selectedLanguage = "fr")
     {
         return dbContext.IdentifierTypes
             .Include(i => i.Translations.Where(t => t.LanguageCode == selectedLanguage))

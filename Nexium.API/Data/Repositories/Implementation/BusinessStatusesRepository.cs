@@ -7,7 +7,7 @@ public class BusinessStatusesRepository(NexiumDbContext dbContext)
     : IBusinessStatusesRepository
 {
     public Task<List<BusinessStatus>> GetAllBusinessStatuses(CancellationToken cancellationToken,
-        string selectedLanguage = "fr-FR")
+        string selectedLanguage = "fr")
     {
         return dbContext.BusinessStatuses
             .Include(i => i.Translations.Where(t => t.LanguageCode == selectedLanguage))

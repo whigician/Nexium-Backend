@@ -8,7 +8,7 @@ public interface ITargetMarketsRepository
         GetAllTargetMarkets(CancellationToken cancellationToken, string selectedLanguage = "fr-FR");
 
     public Task<TargetMarket> GetSingleTargetMarketById(byte targetMarketId, CancellationToken cancellationToken,
-        string selectedLanguage = "fr-FR",
+        string selectedLanguage = "fr",
         bool forView = false);
 
     Task<TargetMarket> CreateTargetMarket(TargetMarket targetMarket, CancellationToken cancellationToken);

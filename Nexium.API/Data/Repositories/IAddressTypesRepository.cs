@@ -8,7 +8,7 @@ public interface IAddressTypesRepository
         GetAllAddressTypes(CancellationToken cancellationToken, string selectedLanguage = "fr-FR");
 
     public Task<AddressType> GetSingleAddressTypeById(byte addressTypeId, CancellationToken cancellationToken,
-        string selectedLanguage = "fr-FR",
+        string selectedLanguage = "fr",
         bool forView = false);
 
     Task<AddressType> CreateAddressType(AddressType addressType, CancellationToken cancellationToken);

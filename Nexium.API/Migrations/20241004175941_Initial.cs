@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nexium.API.Migrations
 {
     /// <inheritdoc />
-    public partial class MultipleConfigurationEntities : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -561,9 +561,9 @@ namespace Nexium.API.Migrations
                 columns: new[] { "code", "name" },
                 values: new object[,]
                 {
-                    { "ar-SA", "العربية" },
-                    { "en-US", "English" },
-                    { "fr-FR", "Français" }
+                    { "ar", "العربية" },
+                    { "en", "English" },
+                    { "fr", "Français" }
                 });
 
             migrationBuilder.CreateIndex(

@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Nexium.API.Migrations
 {
     [DbContext(typeof(NexiumDbContext))]
-    [Migration("20240929142950_MultipleConfigurationEntities")]
-    partial class MultipleConfigurationEntities
+    [Migration("20241004175941_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -816,17 +816,17 @@ namespace Nexium.API.Migrations
                     b.HasData(
                         new
                         {
-                            Code = "ar-SA",
+                            Code = "ar",
                             Name = "العربية"
                         },
                         new
                         {
-                            Code = "fr-FR",
+                            Code = "fr",
                             Name = "Français"
                         },
                         new
                         {
-                            Code = "en-US",
+                            Code = "en",
                             Name = "English"
                         });
                 });
