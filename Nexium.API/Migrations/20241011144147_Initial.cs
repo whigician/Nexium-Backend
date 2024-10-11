@@ -122,7 +122,7 @@ namespace Nexium.API.Migrations
                 name: "languages",
                 columns: table => new
                 {
-                    code = table.Column<string>(type: "character varying(8)", maxLength: 8, nullable: false),
+                    code = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
                     name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false)
                 },
                 constraints: table =>
@@ -136,7 +136,7 @@ namespace Nexium.API.Migrations
                 {
                     id = table.Column<short>(type: "smallint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    language_code = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    language_code = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
                     translated_label = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
                     address_type_id = table.Column<byte>(type: "smallint", nullable: false)
                 },
@@ -157,7 +157,7 @@ namespace Nexium.API.Migrations
                 {
                     id = table.Column<short>(type: "smallint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    language_code = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    language_code = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
                     translated_label = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
                     business_status_id = table.Column<byte>(type: "smallint", nullable: false)
                 },
@@ -173,12 +173,33 @@ namespace Nexium.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "business_types_translations",
+                columns: table => new
+                {
+                    id = table.Column<short>(type: "smallint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    language_code = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
+                    translated_label = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
+                    business_type_id = table.Column<byte>(type: "smallint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_business_types_translations", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_business_types_translations_business_types_business_type_id",
+                        column: x => x.business_type_id,
+                        principalTable: "business_types",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "contact_types_translations",
                 columns: table => new
                 {
                     id = table.Column<short>(type: "smallint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    language_code = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    language_code = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
                     translated_label = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
                     contact_type_id = table.Column<byte>(type: "smallint", nullable: false)
                 },
@@ -219,7 +240,7 @@ namespace Nexium.API.Migrations
                 {
                     id = table.Column<short>(type: "smallint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    language_code = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    language_code = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
                     translated_label = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
                     currency_id = table.Column<byte>(type: "smallint", nullable: false)
                 },
@@ -235,51 +256,12 @@ namespace Nexium.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "business_types_translations",
-                columns: table => new
-                {
-                    id = table.Column<short>(type: "smallint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    language_code = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
-                    translated_label = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
-                    business_type_id = table.Column<byte>(type: "smallint", nullable: false),
-                    address_type_id = table.Column<byte>(type: "smallint", nullable: true),
-                    contact_type_id = table.Column<byte>(type: "smallint", nullable: true),
-                    identifier_type_id = table.Column<byte>(type: "smallint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_business_types_translations", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_business_types_translations_address_types_address_type_id",
-                        column: x => x.address_type_id,
-                        principalTable: "address_types",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "fk_business_types_translations_business_types_business_type_id",
-                        column: x => x.business_type_id,
-                        principalTable: "business_types",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_business_types_translations_contact_types_contact_type_id",
-                        column: x => x.contact_type_id,
-                        principalTable: "contact_types",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "fk_business_types_translations_identifier_types_identifier_typ",
-                        column: x => x.identifier_type_id,
-                        principalTable: "identifier_types",
-                        principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "identifier_types_translations",
                 columns: table => new
                 {
                     id = table.Column<short>(type: "smallint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    language_code = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    language_code = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
                     translated_label = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
                     identifier_type_id = table.Column<byte>(type: "smallint", nullable: false)
                 },
@@ -300,7 +282,7 @@ namespace Nexium.API.Migrations
                 {
                     id = table.Column<short>(type: "smallint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    language_code = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    language_code = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
                     translated_label = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
                     industry_id = table.Column<short>(type: "smallint", nullable: false)
                 },
@@ -322,17 +304,17 @@ namespace Nexium.API.Migrations
                     id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    alias = table.Column<string>(type: "text", nullable: true),
-                    establishment_year = table.Column<string>(type: "text", nullable: true),
-                    start_operating_hour = table.Column<string>(type: "text", nullable: true),
-                    end_operating_hour = table.Column<string>(type: "text", nullable: true),
+                    alias = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: true),
+                    establishment_year = table.Column<string>(type: "character varying(4)", maxLength: 4, nullable: true),
+                    start_operating_hour = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: true),
+                    end_operating_hour = table.Column<string>(type: "character varying(5)", maxLength: 5, nullable: true),
                     employees_count = table.Column<int>(type: "integer", nullable: false),
-                    logo_path = table.Column<string>(type: "text", nullable: true),
+                    logo_path = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: true),
                     fiscal_year_start_period = table.Column<int>(type: "integer", nullable: false),
                     created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     updated_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     deleted_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    language_code = table.Column<string>(type: "character varying(8)", nullable: true),
+                    language_code = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: true),
                     currency_id = table.Column<byte>(type: "smallint", nullable: true),
                     language_id = table.Column<byte>(type: "smallint", nullable: false),
                     business_type_id = table.Column<byte>(type: "smallint", nullable: false),
@@ -541,7 +523,7 @@ namespace Nexium.API.Migrations
                 {
                     id = table.Column<short>(type: "smallint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    language_code = table.Column<string>(type: "character varying(10)", maxLength: 10, nullable: false),
+                    language_code = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
                     translated_label = table.Column<string>(type: "character varying(120)", maxLength: 120, nullable: false),
                     target_market_id = table.Column<byte>(type: "smallint", nullable: false)
                 },
@@ -644,25 +626,10 @@ namespace Nexium.API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "ix_business_types_translations_address_type_id",
-                table: "business_types_translations",
-                column: "address_type_id");
-
-            migrationBuilder.CreateIndex(
                 name: "ix_business_types_translations_business_type_id_language_code",
                 table: "business_types_translations",
                 columns: new[] { "business_type_id", "language_code" },
                 unique: true);
-
-            migrationBuilder.CreateIndex(
-                name: "ix_business_types_translations_contact_type_id",
-                table: "business_types_translations",
-                column: "contact_type_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_business_types_translations_identifier_type_id",
-                table: "business_types_translations",
-                column: "identifier_type_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_city_country_id",
@@ -748,10 +715,10 @@ namespace Nexium.API.Migrations
                 name: "target_markets_translations");
 
             migrationBuilder.DropTable(
-                name: "city");
+                name: "address_types");
 
             migrationBuilder.DropTable(
-                name: "address_types");
+                name: "city");
 
             migrationBuilder.DropTable(
                 name: "contact_types");

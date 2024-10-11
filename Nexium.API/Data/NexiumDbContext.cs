@@ -3,13 +3,8 @@ using Nexium.API.Entities;
 
 namespace Nexium.API.Data;
 
-public class NexiumDbContext : DbContext
+public class NexiumDbContext(DbContextOptions<NexiumDbContext> options) : DbContext(options)
 {
-    public NexiumDbContext(DbContextOptions<NexiumDbContext> options)
-        : base(options)
-    {
-    }
-
     public DbSet<Industry> Industries { get; set; }
     public DbSet<Language> Languages { get; set; }
     public DbSet<TargetMarket> TargetMarkets { get; set; }

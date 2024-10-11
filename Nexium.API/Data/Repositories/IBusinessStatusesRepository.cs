@@ -5,7 +5,7 @@ namespace Nexium.API.Data.Repositories;
 public interface IBusinessStatusesRepository
 {
     public Task<List<BusinessStatus>>
-        GetAllBusinessStatuses(CancellationToken cancellationToken, string selectedLanguage = "fr-FR");
+        GetAllBusinessStatuses(CancellationToken cancellationToken, string selectedLanguage);
 
     public Task<BusinessStatus> GetSingleBusinessStatusById(byte businessStatusId, CancellationToken cancellationToken,
         string selectedLanguage = "fr",

@@ -7,7 +7,7 @@ public class CurrenciesRepository(NexiumDbContext dbContext)
     : ICurrenciesRepository
 {
     public Task<List<Currency>> GetAllCurrencies(CancellationToken cancellationToken,
-        string selectedLanguage = "fr")
+        string selectedLanguage)
     {
         return dbContext.Currencies
             .Include(i => i.Translations.Where(t => t.LanguageCode == selectedLanguage))

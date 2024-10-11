@@ -10,5 +10,5 @@ public class IdentifierType
     public byte Id { get; set; }
 
     [Required] [MaxLength(50)] public string Label { get; set; }
-    public List<BusinessTypeTranslation> Translations { get; set; }
+    public List<IdentifierTypeTranslation> Translations { get; set; }
 }

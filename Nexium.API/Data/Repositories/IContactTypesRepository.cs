@@ -5,7 +5,7 @@ namespace Nexium.API.Data.Repositories;
 public interface IContactTypesRepository
 {
     public Task<List<ContactType>>
-        GetAllContactTypes(CancellationToken cancellationToken, string selectedLanguage = "fr-FR");
+        GetAllContactTypes(CancellationToken cancellationToken, string selectedLanguage);
 
     public Task<ContactType> GetSingleContactTypeById(byte contactTypeId, CancellationToken cancellationToken,
         string selectedLanguage = "fr",

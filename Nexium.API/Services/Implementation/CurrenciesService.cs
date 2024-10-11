@@ -127,7 +127,7 @@ public class CurrenciesService(
             if (translationsToUpdate.Count != 0)
                 await currenciesRepository.UpdateTranslations(translationsToUpdate, cancellationToken);
         }
-        catch (UniqueConstraintException ex)
+        catch (UniqueConstraintException)
         {
             throw new LanguageCodeAlreadyExists("", nameof(Currency));
         }

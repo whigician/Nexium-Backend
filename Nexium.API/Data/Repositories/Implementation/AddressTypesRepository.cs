@@ -7,7 +7,7 @@ public class AddressTypesRepository(NexiumDbContext dbContext)
     : IAddressTypesRepository
 {
     public Task<List<AddressType>> GetAllAddressTypes(CancellationToken cancellationToken,
-        string selectedLanguage = "fr")
+        string selectedLanguage)
     {
         return dbContext.AddressTypes
             .Include(i => i.Translations.Where(t => t.LanguageCode == selectedLanguage))
