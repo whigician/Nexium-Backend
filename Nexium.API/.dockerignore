@@ -1,0 +1,10 @@
+# Ignore SDK packages (e.g., NuGet packages)
+**/bin
+**/obj
+**/packages
+
+# Ignore local SDKs and tools
+**/.dotnet
+**/.local
+**/.sdk
+**/sdk
