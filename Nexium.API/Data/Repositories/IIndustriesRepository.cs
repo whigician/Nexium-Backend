@@ -5,7 +5,7 @@ namespace Nexium.API.Data.Repositories;
 public interface IIndustriesRepository
 {
     public Task<List<Industry>>
-        GetAllIndustries(CancellationToken cancellationToken, string selectedLanguage = "fr-FR");
+        GetAllIndustries(CancellationToken cancellationToken, string selectedLanguage);
 
     public Task<Industry> GetSingleIndustryById(short industryId, CancellationToken cancellationToken,
         string selectedLanguage = "fr",

@@ -9,7 +9,7 @@ public class IndustryTranslation
     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public short Id { get; set; }
 
-    [Required] [MaxLength(10)] public string LanguageCode { get; set; }
+    [Required] [MaxLength(2)] public string LanguageCode { get; set; }
 
     [Required] [MaxLength(120)] public string TranslatedLabel { get; set; }
 

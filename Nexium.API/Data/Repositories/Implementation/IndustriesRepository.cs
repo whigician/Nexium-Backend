@@ -6,7 +6,7 @@ namespace Nexium.API.Data.Repositories.Implementation;
 public class IndustriesRepository(NexiumDbContext dbContext)
     : IIndustriesRepository
 {
-    public Task<List<Industry>> GetAllIndustries(CancellationToken cancellationToken, string selectedLanguage = "fr-FR")
+    public Task<List<Industry>> GetAllIndustries(CancellationToken cancellationToken, string selectedLanguage)
     {
         return dbContext.Industries
             .Include(i => i.Translations.Where(t => t.LanguageCode == selectedLanguage))

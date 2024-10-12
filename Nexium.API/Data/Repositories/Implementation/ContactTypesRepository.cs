@@ -7,7 +7,7 @@ public class ContactTypesRepository(NexiumDbContext dbContext)
     : IContactTypesRepository
 {
     public Task<List<ContactType>> GetAllContactTypes(CancellationToken cancellationToken,
-        string selectedLanguage = "fr")
+        string selectedLanguage)
     {
         return dbContext.ContactTypes
             .Include(i => i.Translations.Where(t => t.LanguageCode == selectedLanguage))

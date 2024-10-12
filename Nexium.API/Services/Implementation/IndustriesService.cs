@@ -119,7 +119,7 @@ public class IndustriesService(
             if (translationsToUpdate.Count != 0)
                 await industriesRepository.UpdateTranslations(translationsToUpdate, cancellationToken);
         }
-        catch (UniqueConstraintException ex)
+        catch (UniqueConstraintException)
         {
             throw new LanguageCodeAlreadyExists("", nameof(Industry));
         }

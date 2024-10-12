@@ -77,8 +77,8 @@ namespace Nexium.API.Migrations
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("language_code");
 
                     b.Property<string>("TranslatedLabel")
@@ -107,7 +107,8 @@ namespace Nexium.API.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Alias")
-                        .HasColumnType("text")
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
                         .HasColumnName("alias");
 
                     b.Property<byte>("BusinessStatusId")
@@ -135,11 +136,13 @@ namespace Nexium.API.Migrations
                         .HasColumnName("employees_count");
 
                     b.Property<string>("EndOperatingHour")
-                        .HasColumnType("text")
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)")
                         .HasColumnName("end_operating_hour");
 
                     b.Property<string>("EstablishmentYear")
-                        .HasColumnType("text")
+                        .HasMaxLength(4)
+                        .HasColumnType("character varying(4)")
                         .HasColumnName("establishment_year");
 
                     b.Property<int>("FiscalYearStartPeriod")
@@ -147,7 +150,8 @@ namespace Nexium.API.Migrations
                         .HasColumnName("fiscal_year_start_period");
 
                     b.Property<string>("LanguageCode")
-                        .HasColumnType("character varying(8)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("language_code");
 
                     b.Property<byte>("LanguageId")
@@ -155,7 +159,8 @@ namespace Nexium.API.Migrations
                         .HasColumnName("language_id");
 
                     b.Property<string>("LogoPath")
-                        .HasColumnType("text")
+                        .HasMaxLength(120)
+                        .HasColumnType("character varying(120)")
                         .HasColumnName("logo_path");
 
                     b.Property<string>("Name")
@@ -165,7 +170,8 @@ namespace Nexium.API.Migrations
                         .HasColumnName("name");
 
                     b.Property<string>("StartOperatingHour")
-                        .HasColumnType("text")
+                        .HasMaxLength(5)
+                        .HasColumnType("character varying(5)")
                         .HasColumnName("start_operating_hour");
 
                     b.Property<DateTime?>("UpdatedAt")
@@ -422,8 +428,8 @@ namespace Nexium.API.Migrations
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("language_code");
 
                     b.Property<string>("TranslatedLabel")
@@ -472,26 +478,14 @@ namespace Nexium.API.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<short>("Id"));
 
-                    b.Property<byte?>("AddressTypeId")
-                        .HasColumnType("smallint")
-                        .HasColumnName("address_type_id");
-
                     b.Property<byte>("BusinessTypeId")
                         .HasColumnType("smallint")
                         .HasColumnName("business_type_id");
 
-                    b.Property<byte?>("ContactTypeId")
-                        .HasColumnType("smallint")
-                        .HasColumnName("contact_type_id");
-
-                    b.Property<byte?>("IdentifierTypeId")
-                        .HasColumnType("smallint")
-                        .HasColumnName("identifier_type_id");
-
                     b.Property<string>("LanguageCode")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("language_code");
 
                     b.Property<string>("TranslatedLabel")
@@ -502,15 +496,6 @@ namespace Nexium.API.Migrations
 
                     b.HasKey("Id")
                         .HasName("pk_business_types_translations");
-
-                    b.HasIndex("AddressTypeId")
-                        .HasDatabaseName("ix_business_types_translations_address_type_id");
-
-                    b.HasIndex("ContactTypeId")
-                        .HasDatabaseName("ix_business_types_translations_contact_type_id");
-
-                    b.HasIndex("IdentifierTypeId")
-                        .HasDatabaseName("ix_business_types_translations_identifier_type_id");
 
                     b.HasIndex("BusinessTypeId", "LanguageCode")
                         .IsUnique()
@@ -583,8 +568,8 @@ namespace Nexium.API.Migrations
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("language_code");
 
                     b.Property<string>("TranslatedLabel")
@@ -660,8 +645,8 @@ namespace Nexium.API.Migrations
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("language_code");
 
                     b.Property<string>("TranslatedLabel")
@@ -716,8 +701,8 @@ namespace Nexium.API.Migrations
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("language_code");
 
                     b.Property<string>("TranslatedLabel")
@@ -772,8 +757,8 @@ namespace Nexium.API.Migrations
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("language_code");
 
                     b.Property<string>("TranslatedLabel")
@@ -795,8 +780,8 @@ namespace Nexium.API.Migrations
             modelBuilder.Entity("Nexium.API.Entities.Language", b =>
                 {
                     b.Property<string>("Code")
-                        .HasMaxLength(8)
-                        .HasColumnType("character varying(8)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("code");
 
                     b.Property<string>("Name")
@@ -867,8 +852,8 @@ namespace Nexium.API.Migrations
 
                     b.Property<string>("LanguageCode")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("character varying(10)")
+                        .HasMaxLength(2)
+                        .HasColumnType("character varying(2)")
                         .HasColumnName("language_code");
 
                     b.Property<byte>("TargetMarketId")
@@ -911,7 +896,7 @@ namespace Nexium.API.Migrations
             modelBuilder.Entity("Nexium.API.Entities.AddressTypeTranslation", b =>
                 {
                     b.HasOne("Nexium.API.Entities.AddressType", "AddressType")
-                        .WithMany()
+                        .WithMany("Translations")
                         .HasForeignKey("AddressTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -1062,27 +1047,12 @@ namespace Nexium.API.Migrations
 
             modelBuilder.Entity("Nexium.API.Entities.BusinessTypeTranslation", b =>
                 {
-                    b.HasOne("Nexium.API.Entities.AddressType", null)
-                        .WithMany("Translations")
-                        .HasForeignKey("AddressTypeId")
-                        .HasConstraintName("fk_business_types_translations_address_types_address_type_id");
-
                     b.HasOne("Nexium.API.Entities.BusinessType", "BusinessType")
                         .WithMany("Translations")
                         .HasForeignKey("BusinessTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_business_types_translations_business_types_business_type_id");
-
-                    b.HasOne("Nexium.API.Entities.ContactType", null)
-                        .WithMany("Translations")
-                        .HasForeignKey("ContactTypeId")
-                        .HasConstraintName("fk_business_types_translations_contact_types_contact_type_id");
-
-                    b.HasOne("Nexium.API.Entities.IdentifierType", null)
-                        .WithMany("Translations")
-                        .HasForeignKey("IdentifierTypeId")
-                        .HasConstraintName("fk_business_types_translations_identifier_types_identifier_typ");
 
                     b.Navigation("BusinessType");
                 });
@@ -1102,7 +1072,7 @@ namespace Nexium.API.Migrations
             modelBuilder.Entity("Nexium.API.Entities.ContactTypeTranslation", b =>
                 {
                     b.HasOne("Nexium.API.Entities.ContactType", "ContactType")
-                        .WithMany()
+                        .WithMany("Translations")
                         .HasForeignKey("ContactTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
@@ -1126,7 +1096,7 @@ namespace Nexium.API.Migrations
             modelBuilder.Entity("Nexium.API.Entities.IdentifierTypeTranslation", b =>
                 {
                     b.HasOne("Nexium.API.Entities.IdentifierType", "AddressType")
-                        .WithMany()
+                        .WithMany("Translations")
                         .HasForeignKey("IdentifierTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
