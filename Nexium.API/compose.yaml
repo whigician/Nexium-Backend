@@ -1,0 +1,40 @@
+services:
+  database:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=nexium
+    mem_limit: 512m
+  api:
+    build:
+      context: .
+      target: develop
+    ports:
+      - 5219:5219
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5219
+    volumes:
+      - .:/app
+      - /app/bin
+      - /app/obj
+    mem_limit: 1024m
+  frontend:
+    build:
+      context: ../../Nexium-Frontend
+    volumes:
+      - ../../Nexium-Frontend/:/app
+      - /app/node_modules
+      - /app/.next
+    ports:
+      - 3000:3000
+    environment:
+      - NODE_ENV=development
+    mem_limit: 3048m
