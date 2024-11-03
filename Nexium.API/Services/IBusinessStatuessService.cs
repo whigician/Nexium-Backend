@@ -1,5 +1,4 @@
 ﻿using Nexium.API.TransferObjects.BusinessStatus;
-using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Services;
 
@@ -17,11 +16,4 @@ public interface IBusinessStatusesService
         CancellationToken cancellationToken);
 
     public Task DeleteBusinessStatus(byte businessStatusId, CancellationToken cancellationToken);
-
-    Task<List<TranslationView>> GetASingleBusinessStatusTranslations(byte businessStatusId,
-        CancellationToken cancellationToken);
-
-    Task UpdateASingleBusinessStatusTranslations(byte businessStatusId,
-        List<TranslationSave> businessStatusTranslationsToSave,
-        CancellationToken cancellationToken);
 }

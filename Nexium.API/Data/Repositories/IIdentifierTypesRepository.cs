@@ -14,11 +14,4 @@ public interface IIdentifierTypesRepository
     Task<IdentifierType> CreateIdentifierType(IdentifierType identifierType, CancellationToken cancellationToken);
     Task UpdateIdentifierType(IdentifierType identifierType, CancellationToken cancellationToken);
     Task DeleteIdentifierType(IdentifierType existingIdentifierType, CancellationToken cancellationToken);
-
-    Task<List<IdentifierTypeTranslation>> GetASingleIdentifierTypeTranslations(byte identifierTypeId,
-        CancellationToken cancellationToken, bool forView = false);
-
-    Task AddTranslations(List<IdentifierTypeTranslation> translationsToCreate, CancellationToken cancellationToken);
-    Task UpdateTranslations(List<IdentifierTypeTranslation> translationsToUpdate, CancellationToken cancellationToken);
-    Task RemoveTranslations(List<IdentifierTypeTranslation> translationsToDelete, CancellationToken cancellationToken);
 }

@@ -14,11 +14,4 @@ public interface IAddressTypesRepository
     Task<AddressType> CreateAddressType(AddressType addressType, CancellationToken cancellationToken);
     Task UpdateAddressType(AddressType addressType, CancellationToken cancellationToken);
     Task DeleteAddressType(AddressType existingAddressType, CancellationToken cancellationToken);
-
-    Task<List<AddressTypeTranslation>> GetASingleAddressTypeTranslations(byte addressTypeId,
-        CancellationToken cancellationToken, bool forView = false);
-
-    Task AddTranslations(List<AddressTypeTranslation> translationsToCreate, CancellationToken cancellationToken);
-    Task UpdateTranslations(List<AddressTypeTranslation> translationsToUpdate, CancellationToken cancellationToken);
-    Task RemoveTranslations(List<AddressTypeTranslation> translationsToDelete, CancellationToken cancellationToken);
 }

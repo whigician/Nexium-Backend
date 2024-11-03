@@ -14,11 +14,4 @@ public interface ICurrenciesRepository
     Task<Currency> CreateCurrency(Currency currency, CancellationToken cancellationToken);
     Task UpdateCurrency(Currency currency, CancellationToken cancellationToken);
     Task DeleteCurrency(Currency existingCurrency, CancellationToken cancellationToken);
-
-    Task<List<CurrencyTranslation>> GetASingleCurrencyTranslations(byte currencyId,
-        CancellationToken cancellationToken, bool forView = false);
-
-    Task AddTranslations(List<CurrencyTranslation> translationsToCreate, CancellationToken cancellationToken);
-    Task UpdateTranslations(List<CurrencyTranslation> translationsToUpdate, CancellationToken cancellationToken);
-    Task RemoveTranslations(List<CurrencyTranslation> translationsToDelete, CancellationToken cancellationToken);
 }

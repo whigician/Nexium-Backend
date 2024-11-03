@@ -14,11 +14,4 @@ public interface IBusinessStatusesRepository
     Task<BusinessStatus> CreateBusinessStatus(BusinessStatus businessStatus, CancellationToken cancellationToken);
     Task UpdateBusinessStatus(BusinessStatus businessStatus, CancellationToken cancellationToken);
     Task DeleteBusinessStatus(BusinessStatus existingBusinessStatus, CancellationToken cancellationToken);
-
-    Task<List<BusinessStatusTranslation>> GetASingleBusinessStatusTranslations(byte businessStatusId,
-        CancellationToken cancellationToken, bool forView = false);
-
-    Task AddTranslations(List<BusinessStatusTranslation> translationsToCreate, CancellationToken cancellationToken);
-    Task UpdateTranslations(List<BusinessStatusTranslation> translationsToUpdate, CancellationToken cancellationToken);
-    Task RemoveTranslations(List<BusinessStatusTranslation> translationsToDelete, CancellationToken cancellationToken);
 }

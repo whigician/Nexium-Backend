@@ -1,5 +1,4 @@
 ﻿using Nexium.API.TransferObjects.Currency;
-using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Services;
 
@@ -15,11 +14,4 @@ public interface ICurrenciesService
         CancellationToken cancellationToken);
 
     public Task DeleteCurrency(byte currencyId, CancellationToken cancellationToken);
-
-    Task<List<TranslationView>> GetASingleCurrencyTranslations(byte currencyId,
-        CancellationToken cancellationToken);
-
-    Task UpdateASingleCurrencyTranslations(byte currencyId,
-        List<TranslationSave> currencyTranslationsToSave,
-        CancellationToken cancellationToken);
 }

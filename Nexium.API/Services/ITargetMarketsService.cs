@@ -1,5 +1,4 @@
 ﻿using Nexium.API.TransferObjects.TargetMarket;
-using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Services;
 
@@ -15,11 +14,4 @@ public interface ITargetMarketsService
         CancellationToken cancellationToken);
 
     public Task DeleteTargetMarket(byte targetMarketId, CancellationToken cancellationToken);
-
-    Task<List<TranslationView>> GetASingleTargetMarketTranslations(byte targetMarketId,
-        CancellationToken cancellationToken);
-
-    Task UpdateASingleTargetMarketTranslations(byte targetMarketId,
-        List<TranslationSave> targetMarketTranslationsToSave,
-        CancellationToken cancellationToken);
 }

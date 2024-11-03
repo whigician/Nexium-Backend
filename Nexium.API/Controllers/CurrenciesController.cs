@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Nexium.API.Services;
 using Nexium.API.TransferObjects.Currency;
-using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Controllers;
 
@@ -46,22 +45,6 @@ public class CurrenciesController(ICurrenciesService currenciesService) : Contro
     public async Task<ActionResult> DeleteCurrency(byte currencyId, CancellationToken cancellationToken)
     {
         await currenciesService.DeleteCurrency(currencyId, cancellationToken);
-        return NoContent();
-    }
-
-    [HttpGet("translations/{currencyId}")]
-    public async Task<ActionResult> GetASingleCurrencyTranslations(byte currencyId,
-        CancellationToken cancellationToken)
-    {
-        return Ok(await currenciesService.GetASingleCurrencyTranslations(currencyId, cancellationToken));
-    }
-
-    [HttpPut("translations/{currencyId}")]
-    public async Task<ActionResult> UpdateASingleCurrencyTranslations(byte currencyId,
-        [FromBody] List<TranslationSave> translationsToSave, CancellationToken cancellationToken)
-    {
-        await currenciesService.UpdateASingleCurrencyTranslations(currencyId, translationsToSave,
-            cancellationToken);
         return NoContent();
     }
 }

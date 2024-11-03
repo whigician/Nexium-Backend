@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Nexium.API.Services;
 using Nexium.API.TransferObjects.AddressType;
-using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Controllers;
 
@@ -46,22 +45,6 @@ public class AddressTypesController(IAddressTypesService addressTypesService) : 
     public async Task<ActionResult> DeleteAddressType(byte addressTypeId, CancellationToken cancellationToken)
     {
         await addressTypesService.DeleteAddressType(addressTypeId, cancellationToken);
-        return NoContent();
-    }
-
-    [HttpGet("translations/{addressTypeId}")]
-    public async Task<ActionResult> GetASingleAddressTypeTranslations(byte addressTypeId,
-        CancellationToken cancellationToken)
-    {
-        return Ok(await addressTypesService.GetASingleAddressTypeTranslations(addressTypeId, cancellationToken));
-    }
-
-    [HttpPut("translations/{addressTypeId}")]
-    public async Task<ActionResult> UpdateASingleAddressTypeTranslations(byte addressTypeId,
-        [FromBody] List<TranslationSave> translationsToSave, CancellationToken cancellationToken)
-    {
-        await addressTypesService.UpdateASingleAddressTypeTranslations(addressTypeId, translationsToSave,
-            cancellationToken);
         return NoContent();
     }
 }

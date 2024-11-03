@@ -1,5 +1,4 @@
 ﻿using Nexium.API.TransferObjects.IdentifierType;
-using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Services;
 
@@ -17,11 +16,4 @@ public interface IIdentifierTypesService
         CancellationToken cancellationToken);
 
     public Task DeleteIdentifierType(byte identifierTypeId, CancellationToken cancellationToken);
-
-    Task<List<TranslationView>> GetASingleIdentifierTypeTranslations(byte identifierTypeId,
-        CancellationToken cancellationToken);
-
-    Task UpdateASingleIdentifierTypeTranslations(byte identifierTypeId,
-        List<TranslationSave> identifierTypeTranslationsToSave,
-        CancellationToken cancellationToken);
 }

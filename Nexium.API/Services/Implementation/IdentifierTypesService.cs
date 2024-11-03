@@ -4,7 +4,6 @@ using Nexium.API.Data.Repositories;
 using Nexium.API.Entities;
 using Nexium.API.Exceptions;
 using Nexium.API.TransferObjects.IdentifierType;
-using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Services.Implementation;
 
@@ -12,18 +11,28 @@ public class IdentifierTypesService(
     IdentifierTypeMapper mapper,
     IIdentifierTypesRepository identifierTypesRepository,
     SelectedLanguageService selectedLanguageService,
-    TranslationMapper translationMapper) : IIdentifierTypesService
+    ITranslationMappingRepository translationMappingRepository) : IIdentifierTypesService
 {
     public async Task<List<IdentifierTypeView>> GetAllIdentifierTypes(CancellationToken cancellationToken)
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var identifierTypes =
             await identifierTypesRepository.GetAllIdentifierTypes(cancellationToken, selectedLanguage);
-        return identifierTypes.Select(x => new IdentifierTypeView
+
+        var identifierTypeViews = new List<IdentifierTypeView>();
+        foreach (var x in identifierTypes)
         {
-            Id = x.Id,
-            Label = x.Translations.FirstOrDefault(t => t.LanguageCode == selectedLanguage)?.TranslatedLabel ?? x.Label
-        }).ToList();
+            var translatedLabel = (await translationMappingRepository.GetSingleEntityTranslationForAttribute(
+                "IdentifierType", x.Id, "Label", selectedLanguage, cancellationToken))?.TranslatedText ?? x.Label;
+
+            identifierTypeViews.Add(new IdentifierTypeView
+            {
+                Id = x.Id,
+                Label = translatedLabel
+            });
+        }
+
+        return identifierTypeViews;
     }
 
     public async Task<IdentifierTypeView> GetSingleIdentifierTypeById(byte identifierTypeId,
@@ -40,9 +49,8 @@ public class IdentifierTypesService(
         return new IdentifierTypeView
         {
             Id = identifierType.Id,
-            Label =
-                identifierType.Translations.FirstOrDefault(t => t.LanguageCode == selectedLanguage)?.TranslatedLabel ??
-                identifierType.Label
+            Label = (await translationMappingRepository.GetSingleEntityTranslationForAttribute("IdentifierType",
+                identifierType.Id, "Label", selectedLanguage, cancellationToken))?.TranslatedText ?? identifierType.Label
         };
     }
 
@@ -84,61 +92,5 @@ public class IdentifierTypesService(
             throw new EntityReferencedException(nameof(IdentifierType), nameof(identifierTypeId),
                 identifierTypeId.ToString());
         }
-    }
-
-    public async Task<List<TranslationView>> GetASingleIdentifierTypeTranslations(byte identifierTypeId,
-        CancellationToken cancellationToken)
-    {
-        return translationMapper.MapToIdentifierTypeTranslationViewList(
-            await identifierTypesRepository.GetASingleIdentifierTypeTranslations(identifierTypeId, cancellationToken,
-                true));
-    }
-
-    public async Task UpdateASingleIdentifierTypeTranslations(byte identifierTypeId,
-        List<TranslationSave> identifierTypeTranslationsToSave, CancellationToken cancellationToken)
-    {
-        var existingTranslations =
-            await identifierTypesRepository.GetASingleIdentifierTypeTranslations(identifierTypeId, cancellationToken);
-        var translationsToCreate =
-            translationMapper.MapToIdentifierTypeTranslationList(identifierTypeTranslationsToSave
-                .Where(x => x.Id is 0 or null).ToList());
-        translationsToCreate.ForEach(t => t.IdentifierTypeId = identifierTypeId);
-        var translationsUpdateInformation = identifierTypeTranslationsToSave
-            .Where(x => existingTranslations.Any(i => i.Id == x.Id)).ToList();
-        var translationsToUpdate = translationsUpdateInformation.Select(x =>
-        {
-            var translationToBeUpdated = existingTranslations.First(et => et.Id == x.Id);
-            if (translationToBeUpdated.LanguageCode == x.LanguageCode &&
-                translationToBeUpdated.TranslatedLabel == x.TranslatedLabel) return null;
-            translationToBeUpdated.LanguageCode = x.LanguageCode;
-            translationToBeUpdated.TranslatedLabel = x.TranslatedLabel;
-            return translationToBeUpdated;
-        }).Where(x => x != null).ToList();
-        var translationsToDelete = existingTranslations
-            .Where(et => identifierTypeTranslationsToSave.All(nt => nt.Id != et.Id && nt.Id != null && nt.Id != 0))
-            .ToList();
-
-        await SaveTranslations(translationsToCreate, translationsToUpdate, translationsToDelete, cancellationToken);
-    }
-
-    private async Task SaveTranslations(List<IdentifierTypeTranslation> translationsToCreate,
-        List<IdentifierTypeTranslation> translationsToUpdate, List<IdentifierTypeTranslation> translationsToDelete,
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            if (translationsToCreate.Count != 0)
-                await identifierTypesRepository.AddTranslations(translationsToCreate, cancellationToken);
-
-            if (translationsToUpdate.Count != 0)
-                await identifierTypesRepository.UpdateTranslations(translationsToUpdate, cancellationToken);
-        }
-        catch (UniqueConstraintException ex)
-        {
-            throw new LanguageCodeAlreadyExists("", nameof(IdentifierType));
-        }
-
-        if (translationsToDelete.Count != 0)
-            await identifierTypesRepository.RemoveTranslations(translationsToDelete, cancellationToken);
     }
 }

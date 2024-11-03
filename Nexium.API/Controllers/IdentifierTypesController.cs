@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Nexium.API.Services;
 using Nexium.API.TransferObjects.IdentifierType;
-using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Controllers;
 
@@ -47,23 +46,6 @@ public class IdentifierTypesController(IIdentifierTypesService identifierTypesSe
     public async Task<ActionResult> DeleteIdentifierType(byte identifierTypeId, CancellationToken cancellationToken)
     {
         await identifierTypesService.DeleteIdentifierType(identifierTypeId, cancellationToken);
-        return NoContent();
-    }
-
-    [HttpGet("translations/{identifierTypeId}")]
-    public async Task<ActionResult> GetASingleIdentifierTypeTranslations(byte identifierTypeId,
-        CancellationToken cancellationToken)
-    {
-        return Ok(
-            await identifierTypesService.GetASingleIdentifierTypeTranslations(identifierTypeId, cancellationToken));
-    }
-
-    [HttpPut("translations/{identifierTypeId}")]
-    public async Task<ActionResult> UpdateASingleIdentifierTypeTranslations(byte identifierTypeId,
-        [FromBody] List<TranslationSave> translationsToSave, CancellationToken cancellationToken)
-    {
-        await identifierTypesService.UpdateASingleIdentifierTypeTranslations(identifierTypeId, translationsToSave,
-            cancellationToken);
         return NoContent();
     }
 }

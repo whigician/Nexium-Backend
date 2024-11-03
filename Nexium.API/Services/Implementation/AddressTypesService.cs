@@ -4,7 +4,6 @@ using Nexium.API.Data.Repositories;
 using Nexium.API.Entities;
 using Nexium.API.Exceptions;
 using Nexium.API.TransferObjects.AddressType;
-using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Services.Implementation;
 
@@ -12,17 +11,27 @@ public class AddressTypesService(
     AddressTypeMapper mapper,
     IAddressTypesRepository addressTypesRepository,
     SelectedLanguageService selectedLanguageService,
-    TranslationMapper translationMapper) : IAddressTypesService
+    ITranslationMappingRepository translationMappingRepository) : IAddressTypesService
 {
     public async Task<List<AddressTypeView>> GetAllAddressTypes(CancellationToken cancellationToken)
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var addressTypes = await addressTypesRepository.GetAllAddressTypes(cancellationToken, selectedLanguage);
-        return addressTypes.Select(x => new AddressTypeView
+
+        var addressTypeViews = new List<AddressTypeView>();
+        foreach (var x in addressTypes)
         {
-            Id = x.Id,
-            Label = x.Translations.FirstOrDefault(t => t.LanguageCode == selectedLanguage)?.TranslatedLabel ?? x.Label
-        }).ToList();
+            var translatedLabel = (await translationMappingRepository.GetSingleEntityTranslationForAttribute(
+                "AddressType", x.Id, "Label", selectedLanguage, cancellationToken))?.TranslatedText ?? x.Label;
+
+            addressTypeViews.Add(new AddressTypeView
+            {
+                Id = x.Id,
+                Label = translatedLabel
+            });
+        }
+
+        return addressTypeViews;
     }
 
     public async Task<AddressTypeView> GetSingleAddressTypeById(byte addressTypeId,
@@ -37,9 +46,8 @@ public class AddressTypesService(
         return new AddressTypeView
         {
             Id = addressType.Id,
-            Label =
-                addressType.Translations.FirstOrDefault(t => t.LanguageCode == selectedLanguage)?.TranslatedLabel ??
-                addressType.Label
+            Label = (await translationMappingRepository.GetSingleEntityTranslationForAttribute("AddressType",
+                addressType.Id, "Label", selectedLanguage, cancellationToken))?.TranslatedText ?? addressType.Label
         };
     }
 
@@ -78,60 +86,5 @@ public class AddressTypesService(
         {
             throw new EntityReferencedException(nameof(AddressType), nameof(addressTypeId), addressTypeId.ToString());
         }
-    }
-
-    public async Task<List<TranslationView>> GetASingleAddressTypeTranslations(byte addressTypeId,
-        CancellationToken cancellationToken)
-    {
-        return translationMapper.MapToAddressTypeTranslationViewList(
-            await addressTypesRepository.GetASingleAddressTypeTranslations(addressTypeId, cancellationToken, true));
-    }
-
-    public async Task UpdateASingleAddressTypeTranslations(byte addressTypeId,
-        List<TranslationSave> addressTypeTranslationsToSave, CancellationToken cancellationToken)
-    {
-        var existingTranslations =
-            await addressTypesRepository.GetASingleAddressTypeTranslations(addressTypeId, cancellationToken);
-        var translationsToCreate =
-            translationMapper.MapToAddressTypeTranslationList(addressTypeTranslationsToSave
-                .Where(x => x.Id is 0 or null).ToList());
-        translationsToCreate.ForEach(t => t.AddressTypeId = addressTypeId);
-        var translationsUpdateInformation = addressTypeTranslationsToSave
-            .Where(x => existingTranslations.Any(i => i.Id == x.Id)).ToList();
-        var translationsToUpdate = translationsUpdateInformation.Select(x =>
-        {
-            var translationToBeUpdated = existingTranslations.First(et => et.Id == x.Id);
-            if (translationToBeUpdated.LanguageCode == x.LanguageCode &&
-                translationToBeUpdated.TranslatedLabel == x.TranslatedLabel) return null;
-            translationToBeUpdated.LanguageCode = x.LanguageCode;
-            translationToBeUpdated.TranslatedLabel = x.TranslatedLabel;
-            return translationToBeUpdated;
-        }).Where(x => x != null).ToList();
-        var translationsToDelete = existingTranslations
-            .Where(et => addressTypeTranslationsToSave.All(nt => nt.Id != et.Id && nt.Id != null && nt.Id != 0))
-            .ToList();
-
-        await SaveTranslations(translationsToCreate, translationsToUpdate, translationsToDelete, cancellationToken);
-    }
-
-    private async Task SaveTranslations(List<AddressTypeTranslation> translationsToCreate,
-        List<AddressTypeTranslation> translationsToUpdate, List<AddressTypeTranslation> translationsToDelete,
-        CancellationToken cancellationToken)
-    {
-        try
-        {
-            if (translationsToCreate.Count != 0)
-                await addressTypesRepository.AddTranslations(translationsToCreate, cancellationToken);
-
-            if (translationsToUpdate.Count != 0)
-                await addressTypesRepository.UpdateTranslations(translationsToUpdate, cancellationToken);
-        }
-        catch (UniqueConstraintException ex)
-        {
-            throw new LanguageCodeAlreadyExists("", nameof(AddressType));
-        }
-
-        if (translationsToDelete.Count != 0)
-            await addressTypesRepository.RemoveTranslations(translationsToDelete, cancellationToken);
     }
 }

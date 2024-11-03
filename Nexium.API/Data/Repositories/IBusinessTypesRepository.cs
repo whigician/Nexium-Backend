@@ -14,11 +14,4 @@ public interface IBusinessTypesRepository
     Task<BusinessType> CreateBusinessType(BusinessType businessType, CancellationToken cancellationToken);
     Task UpdateBusinessType(BusinessType businessType, CancellationToken cancellationToken);
     Task DeleteBusinessType(BusinessType existingBusinessType, CancellationToken cancellationToken);
-
-    Task<List<BusinessTypeTranslation>> GetASingleBusinessTypeTranslations(byte businessTypeId,
-        CancellationToken cancellationToken, bool forView = false);
-
-    Task AddTranslations(List<BusinessTypeTranslation> translationsToCreate, CancellationToken cancellationToken);
-    Task UpdateTranslations(List<BusinessTypeTranslation> translationsToUpdate, CancellationToken cancellationToken);
-    Task RemoveTranslations(List<BusinessTypeTranslation> translationsToDelete, CancellationToken cancellationToken);
 }

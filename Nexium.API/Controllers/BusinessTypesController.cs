@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Nexium.API.Services;
 using Nexium.API.TransferObjects.BusinessType;
-using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Controllers;
 
@@ -46,22 +45,6 @@ public class BusinessTypesController(IBusinessTypesService businessTypesService)
     public async Task<ActionResult> DeleteBusinessType(byte businessTypeId, CancellationToken cancellationToken)
     {
         await businessTypesService.DeleteBusinessType(businessTypeId, cancellationToken);
-        return NoContent();
-    }
-
-    [HttpGet("translations/{businessTypeId}")]
-    public async Task<ActionResult> GetASingleBusinessTypeTranslations(byte businessTypeId,
-        CancellationToken cancellationToken)
-    {
-        return Ok(await businessTypesService.GetASingleBusinessTypeTranslations(businessTypeId, cancellationToken));
-    }
-
-    [HttpPut("translations/{businessTypeId}")]
-    public async Task<ActionResult> UpdateASingleBusinessTypeTranslations(byte businessTypeId,
-        [FromBody] List<TranslationSave> translationsToSave, CancellationToken cancellationToken)
-    {
-        await businessTypesService.UpdateASingleBusinessTypeTranslations(businessTypeId, translationsToSave,
-            cancellationToken);
         return NoContent();
     }
 }

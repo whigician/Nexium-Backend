@@ -24,8 +24,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Fixtures\"/>
         <Folder Include="Helpers\"/>
-        <Folder Include="Systems\Controllers\" />
+        <Folder Include="Systems\Controllers\"/>
         <Folder Include="Systems\Repositories\"/>
         <Folder Include="Systems\Services\"/>
     </ItemGroup>

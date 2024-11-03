@@ -14,14 +14,7 @@ public class NexiumDbContext(DbContextOptions<NexiumDbContext> options) : DbCont
     public DbSet<IdentifierType> IdentifierTypes { get; set; }
     public DbSet<BusinessStatus> BusinessStatuses { get; set; }
     public DbSet<BusinessType> BusinessTypes { get; set; }
-    public DbSet<IndustryTranslation> IndustryTranslations { get; set; }
-    public DbSet<BusinessTypeTranslation> BusinessTypesTranslations { get; set; }
-    public DbSet<BusinessStatusTranslation> BusinessStatusesTranslations { get; set; }
-    public DbSet<TargetMarketTranslation> TargetMarketsTranslations { get; set; }
-    public DbSet<CurrencyTranslation> CurrenciesTranslations { get; set; }
-    public DbSet<AddressTypeTranslation> AddressTypesTranslations { get; set; }
-    public DbSet<ContactTypeTranslation> ContactTypesTranslations { get; set; }
-    public DbSet<IdentifierTypeTranslation> IdentifierTypesTranslations { get; set; }
+    public DbSet<TranslationMapping> TranslationMappings { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -36,29 +29,8 @@ public class NexiumDbContext(DbContextOptions<NexiumDbContext> options) : DbCont
             .HasOne(br => br.RelatedBusiness)
             .WithMany(b => b.Retailers)
             .HasForeignKey(br => br.RelatedBusinessId);
-        modelBuilder.Entity<IndustryTranslation>()
-            .HasIndex(t => new { t.IndustryId, t.LanguageCode })
-            .IsUnique();
-        modelBuilder.Entity<BusinessTypeTranslation>()
-            .HasIndex(t => new { t.BusinessTypeId, t.LanguageCode })
-            .IsUnique();
-        modelBuilder.Entity<BusinessStatusTranslation>()
-            .HasIndex(t => new { t.BusinessStatusId, t.LanguageCode })
-            .IsUnique();
-        modelBuilder.Entity<TargetMarketTranslation>()
-            .HasIndex(t => new { t.TargetMarketId, t.LanguageCode })
-            .IsUnique();
-        modelBuilder.Entity<CurrencyTranslation>()
-            .HasIndex(t => new { t.CurrencyId, t.LanguageCode })
-            .IsUnique();
-        modelBuilder.Entity<AddressTypeTranslation>()
-            .HasIndex(t => new { t.AddressTypeId, t.LanguageCode })
-            .IsUnique();
-        modelBuilder.Entity<ContactTypeTranslation>()
-            .HasIndex(t => new { t.ContactTypeId, t.LanguageCode })
-            .IsUnique();
-        modelBuilder.Entity<IdentifierTypeTranslation>()
-            .HasIndex(t => new { t.IdentifierTypeId, t.LanguageCode })
+        modelBuilder.Entity<TranslationMapping>()
+            .HasIndex(t => new { t.EntityId, t.EntityTypeName, t.AttributeName, t.LanguageCode })
             .IsUnique();
         modelBuilder.Entity<Language>().HasData(
             new Language { Code = "ar", Name = "العربية" },

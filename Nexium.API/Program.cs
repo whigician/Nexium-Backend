@@ -30,11 +30,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseCors("_allowedOrigins");
 app.UseMiddleware<SelectedLanguageMiddleware>();
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.MapControllers();
 using (var scope = app.Services.CreateScope())
 {
@@ -73,6 +73,8 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<IIdentifierTypesRepository, IdentifierTypesRepository>();
     services.AddScoped<ILanguagesService, LanguagesService>();
     services.AddScoped<ILanguagesRepository, LanguagesRepository>();
+    services.AddScoped<ITranslationMappingRepository, TranslationMappingRepository>();
+    services.AddScoped<ITranslationMappingService, TranslationMappingService>();
     // Registering Mappers
     services.AddSingleton<IndustryMapper>();
     services.AddSingleton<TranslationMapper>();
@@ -84,7 +86,6 @@ void ConfigureServices(IServiceCollection services)
     services.AddSingleton<LanguageMapper>();
     services.AddSingleton<CurrencyMapper>();
     services.AddSingleton<TargetMarketMapper>();
-    services.AddSingleton<TranslationMapper>();
     services.AddHttpContextAccessor();
     services.AddScoped<SelectedLanguageService>();
 }

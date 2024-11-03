@@ -1,5 +1,4 @@
 ﻿using Nexium.API.TransferObjects.AddressType;
-using Nexium.API.TransferObjects.Translation;
 
 namespace Nexium.API.Services;
 
@@ -15,11 +14,4 @@ public interface IAddressTypesService
         CancellationToken cancellationToken);
 
     public Task DeleteAddressType(byte addressTypeId, CancellationToken cancellationToken);
-
-    Task<List<TranslationView>> GetASingleAddressTypeTranslations(byte addressTypeId,
-        CancellationToken cancellationToken);
-
-    Task UpdateASingleAddressTypeTranslations(byte addressTypeId,
-        List<TranslationSave> addressTypeTranslationsToSave,
-        CancellationToken cancellationToken);
 }
