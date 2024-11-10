@@ -10,4 +10,5 @@ public class ContactType
     public byte Id { get; set; }
 
     [Required] [MaxLength(50)] public string Label { get; set; }
+    public ICollection<BusinessContact> BusinessContacts { get; set; } = new List<BusinessContact>();
 }

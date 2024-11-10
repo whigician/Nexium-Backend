@@ -11,5 +11,5 @@ public class Industry
 
     [Required] [MaxLength(50)] public string Label { get; set; }
 
-    public List<Business> Businesses { get; set; }
+    public ICollection<Business> Businesses { get; set; } = new List<Business>();
 }

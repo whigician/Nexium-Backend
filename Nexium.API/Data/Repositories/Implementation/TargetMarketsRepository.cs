@@ -6,15 +6,14 @@ namespace Nexium.API.Data.Repositories.Implementation;
 public class TargetMarketsRepository(NexiumDbContext dbContext)
     : ITargetMarketsRepository
 {
-    public Task<List<TargetMarket>> GetAllTargetMarkets(CancellationToken cancellationToken,
-        string selectedLanguage)
+    public Task<List<TargetMarket>> GetAllTargetMarkets(CancellationToken cancellationToken)
     {
         return dbContext.TargetMarkets
             .AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<TargetMarket> GetSingleTargetMarketById(byte targetMarketId, CancellationToken cancellationToken,
-        string selectedLanguage, bool forView = false)
+        bool forView = false)
     {
         if (forView)
             return await dbContext.TargetMarkets.AsNoTracking()

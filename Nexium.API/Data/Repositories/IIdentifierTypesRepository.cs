@@ -5,10 +5,9 @@ namespace Nexium.API.Data.Repositories;
 public interface IIdentifierTypesRepository
 {
     public Task<List<IdentifierType>>
-        GetAllIdentifierTypes(CancellationToken cancellationToken, string selectedLanguage);
+        GetAllIdentifierTypes(CancellationToken cancellationToken);
 
     public Task<IdentifierType> GetSingleIdentifierTypeById(byte identifierTypeId, CancellationToken cancellationToken,
-        string selectedLanguage = "fr",
         bool forView = false);
 
     Task<IdentifierType> CreateIdentifierType(IdentifierType identifierType, CancellationToken cancellationToken);

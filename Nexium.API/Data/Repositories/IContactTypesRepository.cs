@@ -5,10 +5,9 @@ namespace Nexium.API.Data.Repositories;
 public interface IContactTypesRepository
 {
     public Task<List<ContactType>>
-        GetAllContactTypes(CancellationToken cancellationToken, string selectedLanguage);
+        GetAllContactTypes(CancellationToken cancellationToken);
 
     public Task<ContactType> GetSingleContactTypeById(byte contactTypeId, CancellationToken cancellationToken,
-        string selectedLanguage = "fr",
         bool forView = false);
 
     Task<ContactType> CreateContactType(ContactType contactType, CancellationToken cancellationToken);

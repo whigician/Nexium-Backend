@@ -5,10 +5,9 @@ namespace Nexium.API.Data.Repositories;
 public interface IBusinessTypesRepository
 {
     public Task<List<BusinessType>>
-        GetAllBusinessTypes(CancellationToken cancellationToken, string selectedLanguage);
+        GetAllBusinessTypes(CancellationToken cancellationToken);
 
     public Task<BusinessType> GetSingleBusinessTypeById(byte businessTypeId, CancellationToken cancellationToken,
-        string selectedLanguage = "fr",
         bool forView = false);
 
     Task<BusinessType> CreateBusinessType(BusinessType businessType, CancellationToken cancellationToken);

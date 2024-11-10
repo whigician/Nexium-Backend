@@ -10,4 +10,5 @@ public class TargetMarket
     public byte Id { get; set; }
 
     [Required] [MaxLength(50)] public string Label { get; set; }
+    public ICollection<Business> Businesses { get; set; } = new List<Business>();
 }

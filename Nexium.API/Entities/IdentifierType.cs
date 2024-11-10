@@ -10,4 +10,5 @@ public class IdentifierType
     public byte Id { get; set; }
 
     [Required] [MaxLength(50)] public string Label { get; set; }
+    public ICollection<BusinessIdentifier> BusinessIdentifiers { get; set; } = new List<BusinessIdentifier>();
 }

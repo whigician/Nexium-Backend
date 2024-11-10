@@ -17,7 +17,7 @@ public class IdentifierTypesService(
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var identifierTypes =
-            await identifierTypesRepository.GetAllIdentifierTypes(cancellationToken, selectedLanguage);
+            await identifierTypesRepository.GetAllIdentifierTypes(cancellationToken);
 
         var identifierTypeViews = new List<IdentifierTypeView>();
         foreach (var x in identifierTypes)
@@ -41,7 +41,6 @@ public class IdentifierTypesService(
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var identifierType =
             await identifierTypesRepository.GetSingleIdentifierTypeById(identifierTypeId, cancellationToken,
-                selectedLanguage,
                 true);
         if (identifierType == null)
             throw new EntityNotFoundException(nameof(IdentifierType), nameof(identifierTypeId),
@@ -50,7 +49,8 @@ public class IdentifierTypesService(
         {
             Id = identifierType.Id,
             Label = (await translationMappingRepository.GetSingleEntityTranslationForAttribute("IdentifierType",
-                identifierType.Id, "Label", selectedLanguage, cancellationToken))?.TranslatedText ?? identifierType.Label
+                        identifierType.Id, "Label", selectedLanguage, cancellationToken))?.TranslatedText ??
+                    identifierType.Label
         };
     }
 

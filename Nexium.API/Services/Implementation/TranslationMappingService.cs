@@ -11,11 +11,11 @@ public class TranslationMappingService(
     ITranslationMappingRepository translationMappingRepository,
     TranslationMapper translationMapper) : ITranslationMappingService
 {
-    public async Task UpdateASingleAddressTypeTranslations(string entityTypeName,long entityId, string attributeName,
+    public async Task UpdateASingleAddressTypeTranslations(string entityTypeName, long entityId, string attributeName,
         List<TranslationMappingSave> addressTypeTranslationsToSave, CancellationToken cancellationToken)
     {
         var existingTranslations =
-            await translationMappingRepository.GetASingleEntityTranslationsForAttribute(entityTypeName,entityId,
+            await translationMappingRepository.GetASingleEntityTranslationsForAttribute(entityTypeName, entityId,
                 attributeName, cancellationToken);
         var translationsToCreate =
             translationMapper.MapToTranslationMappingList(addressTypeTranslationsToSave

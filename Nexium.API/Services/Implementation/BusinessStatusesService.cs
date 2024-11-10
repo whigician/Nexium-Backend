@@ -17,7 +17,7 @@ public class BusinessStatusesService(
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var businessStatuses =
-            await businessStatusesRepository.GetAllBusinessStatuses(cancellationToken, selectedLanguage);
+            await businessStatusesRepository.GetAllBusinessStatuses(cancellationToken);
 
         var businessStatusViews = new List<BusinessStatusView>();
         foreach (var x in businessStatuses)
@@ -40,8 +40,7 @@ public class BusinessStatusesService(
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var businessStatus =
-            await businessStatusesRepository.GetSingleBusinessStatusById(businessStatusId, cancellationToken,
-                selectedLanguage, true);
+            await businessStatusesRepository.GetSingleBusinessStatusById(businessStatusId, cancellationToken, true);
         if (businessStatus == null)
             throw new EntityNotFoundException(nameof(BusinessStatus), nameof(businessStatusId),
                 businessStatusId.ToString());
@@ -49,7 +48,8 @@ public class BusinessStatusesService(
         {
             Id = businessStatus.Id,
             Label = (await translationMappingRepository.GetSingleEntityTranslationForAttribute("BusinessStatus",
-                businessStatus.Id, "Label", selectedLanguage, cancellationToken))?.TranslatedText ?? businessStatus.Label
+                        businessStatus.Id, "Label", selectedLanguage, cancellationToken))?.TranslatedText ??
+                    businessStatus.Label
         };
     }
 

@@ -6,15 +6,14 @@ namespace Nexium.API.Data.Repositories.Implementation;
 public class AddressTypesRepository(NexiumDbContext dbContext)
     : IAddressTypesRepository
 {
-    public Task<List<AddressType>> GetAllAddressTypes(CancellationToken cancellationToken,
-        string selectedLanguage)
+    public Task<List<AddressType>> GetAllAddressTypes(CancellationToken cancellationToken)
     {
         return dbContext.AddressTypes
             .AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<AddressType> GetSingleAddressTypeById(byte addressTypeId, CancellationToken cancellationToken,
-        string selectedLanguage, bool forView = false)
+        bool forView = false)
     {
         if (forView)
             return await dbContext.AddressTypes.AsNoTracking()

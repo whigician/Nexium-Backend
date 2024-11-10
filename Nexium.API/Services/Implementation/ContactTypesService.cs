@@ -16,7 +16,7 @@ public class ContactTypesService(
     public async Task<List<ContactTypeView>> GetAllContactTypes(CancellationToken cancellationToken)
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
-        var businessTypes = await contactTypesRepository.GetAllContactTypes(cancellationToken, selectedLanguage);
+        var businessTypes = await contactTypesRepository.GetAllContactTypes(cancellationToken);
 
         var contactTypeViews = new List<ContactTypeView>();
         foreach (var x in businessTypes)
@@ -39,7 +39,7 @@ public class ContactTypesService(
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var contactType =
-            await contactTypesRepository.GetSingleContactTypeById(contactTypeId, cancellationToken, selectedLanguage,
+            await contactTypesRepository.GetSingleContactTypeById(contactTypeId, cancellationToken,
                 true);
         if (contactType == null)
             throw new EntityNotFoundException(nameof(ContactType), nameof(contactTypeId), contactTypeId.ToString());

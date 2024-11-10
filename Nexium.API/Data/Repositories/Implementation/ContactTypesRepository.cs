@@ -6,15 +6,14 @@ namespace Nexium.API.Data.Repositories.Implementation;
 public class ContactTypesRepository(NexiumDbContext dbContext)
     : IContactTypesRepository
 {
-    public Task<List<ContactType>> GetAllContactTypes(CancellationToken cancellationToken,
-        string selectedLanguage)
+    public Task<List<ContactType>> GetAllContactTypes(CancellationToken cancellationToken)
     {
         return dbContext.ContactTypes
             .AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<ContactType> GetSingleContactTypeById(byte contactTypeId, CancellationToken cancellationToken,
-        string selectedLanguage, bool forView = false)
+        bool forView = false)
     {
         if (forView)
             return await dbContext.ContactTypes.AsNoTracking()

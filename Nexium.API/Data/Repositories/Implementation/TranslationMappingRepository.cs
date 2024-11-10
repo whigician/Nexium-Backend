@@ -43,5 +43,4 @@ public class TranslationMappingRepository(NexiumDbContext dbContext) : ITranslat
         dbContext.TranslationMappings.RemoveRange(translationsToDelete);
         await dbContext.SaveChangesAsync(cancellationToken);
     }
-    
 }

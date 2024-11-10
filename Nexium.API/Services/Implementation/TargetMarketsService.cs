@@ -16,7 +16,7 @@ public class TargetMarketsService(
     public async Task<List<TargetMarketView>> GetAllTargetMarkets(CancellationToken cancellationToken)
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
-        var targetMarkets = await targetMarketsRepository.GetAllTargetMarkets(cancellationToken, selectedLanguage);
+        var targetMarkets = await targetMarketsRepository.GetAllTargetMarkets(cancellationToken);
 
         var targetMarketViews = new List<TargetMarketView>();
         foreach (var x in targetMarkets)
@@ -39,7 +39,7 @@ public class TargetMarketsService(
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var targetMarket =
-            await targetMarketsRepository.GetSingleTargetMarketById(targetMarketId, cancellationToken, selectedLanguage,
+            await targetMarketsRepository.GetSingleTargetMarketById(targetMarketId, cancellationToken,
                 true);
         if (targetMarket == null)
             throw new EntityNotFoundException(nameof(TargetMarket), nameof(targetMarketId), targetMarketId.ToString());

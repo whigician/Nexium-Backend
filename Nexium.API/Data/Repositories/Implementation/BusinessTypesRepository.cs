@@ -6,15 +6,14 @@ namespace Nexium.API.Data.Repositories.Implementation;
 public class BusinessTypesRepository(NexiumDbContext dbContext)
     : IBusinessTypesRepository
 {
-    public Task<List<BusinessType>> GetAllBusinessTypes(CancellationToken cancellationToken,
-        string selectedLanguage)
+    public Task<List<BusinessType>> GetAllBusinessTypes(CancellationToken cancellationToken)
     {
         return dbContext.BusinessTypes
             .AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<BusinessType> GetSingleBusinessTypeById(byte businessTypeId, CancellationToken cancellationToken,
-        string selectedLanguage, bool forView = false)
+        bool forView = false)
     {
         if (forView)
             return await dbContext.BusinessTypes.AsNoTracking()

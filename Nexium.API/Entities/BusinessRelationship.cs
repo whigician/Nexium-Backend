@@ -2,11 +2,10 @@
 
 public class BusinessRelationship
 {
-    public long BusinessId { get; set; }
-    public Business Business { get; set; }
+    public long SupplierId { get; set; }
+    public Business Supplier { get; set; }
 
-    public long RelatedBusinessId { get; set; }
-    public Business RelatedBusiness { get; set; }
-
-    public bool IsRetailer { get; set; }
+    public long RetailerId { get; set; }
+    public Business Retailer { get; set; }
+    public BusinessRelationshipType BusinessRelationshipType { get; set; }
 }

@@ -6,15 +6,14 @@ namespace Nexium.API.Data.Repositories.Implementation;
 public class CurrenciesRepository(NexiumDbContext dbContext)
     : ICurrenciesRepository
 {
-    public Task<List<Currency>> GetAllCurrencies(CancellationToken cancellationToken,
-        string selectedLanguage)
+    public Task<List<Currency>> GetAllCurrencies(CancellationToken cancellationToken)
     {
         return dbContext.Currencies
             .AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<Currency> GetSingleCurrencyById(byte currencyId, CancellationToken cancellationToken,
-        string selectedLanguage, bool forView = false)
+        bool forView = false)
     {
         if (forView)
             return await dbContext.Currencies.AsNoTracking()

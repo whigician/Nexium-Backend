@@ -6,16 +6,14 @@ namespace Nexium.API.Data.Repositories.Implementation;
 public class IdentifierTypesRepository(NexiumDbContext dbContext)
     : IIdentifierTypesRepository
 {
-    public Task<List<IdentifierType>> GetAllIdentifierTypes(CancellationToken cancellationToken,
-        string selectedLanguage)
+    public Task<List<IdentifierType>> GetAllIdentifierTypes(CancellationToken cancellationToken)
     {
         return dbContext.IdentifierTypes
             .AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<IdentifierType> GetSingleIdentifierTypeById(byte identifierTypeId,
-        CancellationToken cancellationToken,
-        string selectedLanguage, bool forView = false)
+        CancellationToken cancellationToken, bool forView = false)
     {
         if (forView)
             return await dbContext.IdentifierTypes.AsNoTracking()

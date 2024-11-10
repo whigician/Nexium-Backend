@@ -16,7 +16,7 @@ public class AddressTypesService(
     public async Task<List<AddressTypeView>> GetAllAddressTypes(CancellationToken cancellationToken)
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
-        var addressTypes = await addressTypesRepository.GetAllAddressTypes(cancellationToken, selectedLanguage);
+        var addressTypes = await addressTypesRepository.GetAllAddressTypes(cancellationToken);
 
         var addressTypeViews = new List<AddressTypeView>();
         foreach (var x in addressTypes)
@@ -39,7 +39,7 @@ public class AddressTypesService(
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var addressType =
-            await addressTypesRepository.GetSingleAddressTypeById(addressTypeId, cancellationToken, selectedLanguage,
+            await addressTypesRepository.GetSingleAddressTypeById(addressTypeId, cancellationToken,
                 true);
         if (addressType == null)
             throw new EntityNotFoundException(nameof(AddressType), nameof(addressTypeId), addressTypeId.ToString());

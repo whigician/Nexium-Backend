@@ -16,7 +16,7 @@ public class IndustriesService(
     public async Task<List<IndustryView>> GetAllIndustries(CancellationToken cancellationToken)
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
-        var industries = await industriesRepository.GetAllIndustries(cancellationToken, selectedLanguage);
+        var industries = await industriesRepository.GetAllIndustries(cancellationToken);
 
         var industryViews = new List<IndustryView>();
         foreach (var x in industries)
@@ -38,7 +38,7 @@ public class IndustriesService(
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var industry =
-            await industriesRepository.GetSingleIndustryById(industryId, cancellationToken, selectedLanguage, true);
+            await industriesRepository.GetSingleIndustryById(industryId, cancellationToken, true);
         if (industry == null)
             throw new EntityNotFoundException(nameof(Industry), nameof(industryId), industryId.ToString());
         return new IndustryView

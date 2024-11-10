@@ -1,5 +1,6 @@
 using EntityFramework.Exceptions.PostgreSQL;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Nexium.API.Configuration;
 using Nexium.API.Data;
 using Nexium.API.Data.Repositories;
@@ -34,6 +35,13 @@ app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 app.UseCors("_allowedOrigins");
 app.UseMiddleware<SelectedLanguageMiddleware>();
 app.UseHttpsRedirection();
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "Uploads")),
+    RequestPath = "/uploads"
+});
+
 app.UseAuthorization();
 app.MapControllers();
 using (var scope = app.Services.CreateScope())
@@ -75,6 +83,14 @@ void ConfigureServices(IServiceCollection services)
     services.AddScoped<ILanguagesRepository, LanguagesRepository>();
     services.AddScoped<ITranslationMappingRepository, TranslationMappingRepository>();
     services.AddScoped<ITranslationMappingService, TranslationMappingService>();
+    services.AddScoped<IEmployeePositionsRepository, EmployeePositionsRepository>();
+    services.AddScoped<IEmployeePositionsService, EmployeePositionsService>();
+    services.AddScoped<IPersonIdentifierTypesRepository, PersonIdentifierTypesRepository>();
+    services.AddScoped<IPersonIdentifierTypesService, PersonIdentifierTypesService>();
+    services.AddScoped<IBusinessLinkTypesRepository, BusinessLinkTypesRepository>();
+    services.AddScoped<IBusinessLinkTypesService, BusinessLinkTypesService>();
+    services.Configure<FileStorageSettings>(builder.Configuration.GetSection("FileStorage"));
+    services.AddScoped<IFileStorageService, FileStorageService>();
     // Registering Mappers
     services.AddSingleton<IndustryMapper>();
     services.AddSingleton<TranslationMapper>();
@@ -86,6 +102,9 @@ void ConfigureServices(IServiceCollection services)
     services.AddSingleton<LanguageMapper>();
     services.AddSingleton<CurrencyMapper>();
     services.AddSingleton<TargetMarketMapper>();
+    services.AddSingleton<EmployeePositionMapper>();
+    services.AddSingleton<PersonIdentifierTypeMapper>();
+    services.AddSingleton<BusinessLinkTypeMapper>();
     services.AddHttpContextAccessor();
     services.AddScoped<SelectedLanguageService>();
 }

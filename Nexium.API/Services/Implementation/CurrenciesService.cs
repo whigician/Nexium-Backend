@@ -16,7 +16,7 @@ public class CurrenciesService(
     public async Task<List<CurrencyView>> GetAllCurrencies(CancellationToken cancellationToken)
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
-        var businessTypes = await currenciesRepository.GetAllCurrencies(cancellationToken, selectedLanguage);
+        var businessTypes = await currenciesRepository.GetAllCurrencies(cancellationToken);
 
         var currencyViews = new List<CurrencyView>();
         foreach (var x in businessTypes)
@@ -39,7 +39,7 @@ public class CurrenciesService(
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var currency =
-            await currenciesRepository.GetSingleCurrencyById(currencyId, cancellationToken, selectedLanguage,
+            await currenciesRepository.GetSingleCurrencyById(currencyId, cancellationToken,
                 true);
         if (currency == null)
             throw new EntityNotFoundException(nameof(Currency), nameof(currencyId), currencyId.ToString());

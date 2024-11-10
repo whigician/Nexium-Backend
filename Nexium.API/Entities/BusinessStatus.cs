@@ -10,4 +10,5 @@ public class BusinessStatus
     public byte Id { get; set; }
 
     [Required] [MaxLength(25)] public string Label { get; set; }
+    public ICollection<Business> Businesses { get; set; } = new List<Business>();
 }

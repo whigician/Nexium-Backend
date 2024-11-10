@@ -16,7 +16,7 @@ public class BusinessTypesService(
     public async Task<List<BusinessTypeView>> GetAllBusinessTypes(CancellationToken cancellationToken)
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
-        var businessTypes = await businessTypesRepository.GetAllBusinessTypes(cancellationToken, selectedLanguage);
+        var businessTypes = await businessTypesRepository.GetAllBusinessTypes(cancellationToken);
 
         var businessStatusViews = new List<BusinessTypeView>();
         foreach (var x in businessTypes)
@@ -39,7 +39,7 @@ public class BusinessTypesService(
     {
         var selectedLanguage = selectedLanguageService.GetSelectedLanguage();
         var businessType =
-            await businessTypesRepository.GetSingleBusinessTypeById(businessTypeId, cancellationToken, selectedLanguage,
+            await businessTypesRepository.GetSingleBusinessTypeById(businessTypeId, cancellationToken,
                 true);
         if (businessType == null)
             throw new EntityNotFoundException(nameof(BusinessType), nameof(businessTypeId), businessTypeId.ToString());

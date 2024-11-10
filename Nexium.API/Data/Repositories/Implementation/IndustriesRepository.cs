@@ -6,14 +6,14 @@ namespace Nexium.API.Data.Repositories.Implementation;
 public class IndustriesRepository(NexiumDbContext dbContext)
     : IIndustriesRepository
 {
-    public Task<List<Industry>> GetAllIndustries(CancellationToken cancellationToken, string selectedLanguage)
+    public Task<List<Industry>> GetAllIndustries(CancellationToken cancellationToken)
     {
         return dbContext.Industries
             .AsNoTracking().ToListAsync(cancellationToken);
     }
 
     public async Task<Industry> GetSingleIndustryById(short industryId, CancellationToken cancellationToken,
-        string selectedLanguage, bool forView = false)
+        bool forView = false)
     {
         if (forView)
             return await dbContext.Industries.AsNoTracking()

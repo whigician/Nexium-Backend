@@ -5,10 +5,9 @@ namespace Nexium.API.Data.Repositories;
 public interface ICurrenciesRepository
 {
     public Task<List<Currency>>
-        GetAllCurrencies(CancellationToken cancellationToken, string selectedLanguage = "fr-FR");
+        GetAllCurrencies(CancellationToken cancellationToken);
 
     public Task<Currency> GetSingleCurrencyById(byte currencyId, CancellationToken cancellationToken,
-        string selectedLanguage = "fr",
         bool forView = false);
 
     Task<Currency> CreateCurrency(Currency currency, CancellationToken cancellationToken);

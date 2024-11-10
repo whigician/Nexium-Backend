@@ -11,7 +11,8 @@ public class BusinessContact
 
     [Required] [MaxLength(50)] public string ResponsibleName { get; set; }
 
-    [MaxLength(50)] public string ResponsiblePosition { get; set; }
+    public EmployeePosition EmployeePosition { get; set; }
+    public ushort EmployeePositionId { get; set; }
 
     [MaxLength(320)] public string Email { get; set; }
 

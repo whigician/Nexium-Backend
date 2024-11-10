@@ -26,5 +26,5 @@ public class BusinessAddress
     public Business Business { get; set; }
     public long BusinessId { get; set; }
     public City City { get; set; }
-    public byte CityId { get; set; }
+    public ushort CityId { get; set; }
 }

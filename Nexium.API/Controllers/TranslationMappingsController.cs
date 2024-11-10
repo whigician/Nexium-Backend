@@ -17,10 +17,11 @@ public class TranslationMappingsController(ITranslationMappingService translatio
     }
 
     [HttpPut("{entityName}/{entityId}")]
-    public async Task<ActionResult> UpdateASingleAddressTypeTranslations(string entityName,long entityId, string attributeName,
+    public async Task<ActionResult> UpdateASingleAddressTypeTranslations(string entityName, long entityId,
+        string attributeName,
         [FromBody] List<TranslationMappingSave> translationsToSave, CancellationToken cancellationToken)
     {
-        await translationMappingService.UpdateASingleAddressTypeTranslations(entityName,entityId, attributeName,
+        await translationMappingService.UpdateASingleAddressTypeTranslations(entityName, entityId, attributeName,
             translationsToSave,
             cancellationToken);
         return NoContent();
