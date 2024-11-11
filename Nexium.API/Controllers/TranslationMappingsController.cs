@@ -8,7 +8,7 @@ namespace Nexium.API.Controllers;
 [Route("api/[Controller]")]
 public class TranslationMappingsController(ITranslationMappingService translationMappingService) : ControllerBase
 {
-    [HttpGet("/{entityId}")]
+    [HttpGet("{entityId}")]
     public async Task<ActionResult> GetASingleEntityTranslations(long entityId, string entityName, string attributeName,
         CancellationToken cancellationToken)
     {
